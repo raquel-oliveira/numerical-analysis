@@ -23,7 +23,7 @@
  * @version     1.0
  * */
 
-namespace numeric_analysis {
+namespace numerical_analysis {
 
 template<typename TField>
 class Matrix {
