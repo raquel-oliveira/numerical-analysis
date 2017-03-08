@@ -115,13 +115,6 @@ class Matrix {
         Matrix<TField> operator*(const Matrix<TField> & _rhs);
 
         /**
-         * Operator for multiplication and assignment.
-         *
-         * @param _rhs  The matrix to right-multiply this matrix.
-         * */
-        Matrix<TField> & operator*=(const Matrix<TField> & _rhs);
-
-        /**
          * Operator for multiplication by scalar in the form scalar * matrix.
          *
          * @param _rhs  The scalar to left-multiply this matrix.

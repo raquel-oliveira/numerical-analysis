@@ -74,3 +74,33 @@ numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operato
     }   
     return *this;
 }
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator*(const Matrix<TField> & _rhs) {
+    // Check multiplication condition
+    if (rows != _rhs.cols) throw std::logic_error("You must provide matrices mxn and nxp.");
+
+    // Multiply
+    Matrix<TField> prod {rows, _rhs.cols, 0};
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            for (int k = 0; k < cols; ++k) {
+                prod[i][j] += this->data[i][k] * _rhs.get(k, j); 
+            }   
+        }
+    }
+    return prod;
+}
+
+
+numerical_analysis::Matrix<TField> numerical_analysis::operator*(const TField & _scalar, numerical_analysis::Matrix<TField> & _rhs) {
+
+}
+
+numerical_analysis::Matrix<TField> numerical_analysis::operator*(numerical_analysis::Matrix<TField> & _rhs, const TField & _scalar) {
+
+}
+
+numerical_analysis::Matrix<TField> & numerical_analysis::operator*=(const TField & _scalar) {
+
+}
