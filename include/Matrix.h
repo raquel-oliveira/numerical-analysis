@@ -34,8 +34,8 @@ class Matrix {
 
     public:
         
-        int cols;               /*< Number of columns. */
         int rows;               /*< Number of rows. */
+        int cols;               /*< Number of columns. */
 
         /**
          * Constructor for an m x n matrix with a defined value
@@ -63,67 +63,84 @@ class Matrix {
         ~Matrix();
 
         /**
+         * Access function: takes the element data[i][j].
+         *
+         * @param i     Element row.
+         * @param j     Element column.
+         * */
+        const TField & at(const int & i, const int & j) const; 
+
+        /**
+         * Set function: set data[i][j] to a value.
+         *
+         * @param i     Element row.
+         * @param j     Element column.
+         * @param value New value.
+         * */
+        void set(const int & i, const int & j, const int & value);
+
+        /**
          * Operator for matrix addition.
          *
          * @param _rhs  The matrix to be added to this matrix.
          * */
-        Matrix & operator+(const Matrix & _rhs);
+        Matrix<TField> operator+(const Matrix<TField> & _rhs);
 
         /**
          * Operator for matrix addition and assignment.
          *
          * @param _rhs  The matrix to be added to this matrix.
          * */
-        Matrix & operator+=(const Matrix & _rhs);
+        Matrix<TField> & operator+=(const Matrix<TField> & _rhs);
 
         /**
          * Operator for matrix subtraction.
          *
          * @param _rhs  The matrix to be subtracted from this matrix.
          * */
-        Matrix & operator-(const Matrix & _rhs);
+        Matrix<TField> operator-(const Matrix<TField> & _rhs);
 
         /**
          * Operator for matrix subtraction and assignment.
          *
          * @param _rhs  The matrix to be subtracted from this matrix.
          * */
-        Matrix & operator-=(const Matrix & _rhs);
+        Matrix<TField> & operator-=(const Matrix<TField> & _rhs);
 
         /**
          * Operator for multiplication of matrices.
          *
          * @param _rhs  The matrix to right-multiply this matrix.
          * */
-        Matrix & operator*(const Matrix & _rhs);
+        Matrix<TField> operator*(const Matrix<TField> & _rhs);
 
         /**
          * Operator for multiplication and assignment.
          *
          * @param _rhs  The matrix to right-multiply this matrix.
          * */
-        Matrix & operator*=(const Matrix & _rhs);
+        Matrix<TField> & operator*=(const Matrix<TField> & _rhs);
 
         /**
          * Operator for multiplication by scalar in the form scalar * matrix.
          *
          * @param _rhs  The scalar to left-multiply this matrix.
          * */
-        friend Matrix & operator*(const TField & _scalar, Matrix & _rhs);
+        friend Matrix<TField> operator*(const TField & _scalar, Matrix<TField> & _rhs);
 
         /**
          * Operator for multiplication by scalar in the form matrix * scalar.
          *
          * @param _rhs  The scalar to right-multiply this matrix.
          * */
-        friend Matrix & operator*(Matrix & _rhs, const TField & _scalar);
+        friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
 
         /**
          * Operator for multiplication by scalar and assignment.
          *
          * @param _rhs  The scalar to right-multiply this matrix.
          * */
-        friend Matrix & operator*=(const TField & _scalar);
+        friend Matrix<TField> & operator*=(const TField & _scalar);
 
 };
 
