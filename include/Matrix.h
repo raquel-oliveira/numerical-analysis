@@ -138,4 +138,6 @@ class Matrix {
 };
 
 }
+
+#include "../src/Matrix.inl"
 #endif
