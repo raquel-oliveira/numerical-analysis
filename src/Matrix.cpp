@@ -1,3 +1,5 @@
+#include "Matrix.h"
+
 template<typename TField>
 numerical_analysis::Matrix (const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
 
@@ -92,15 +94,28 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator*
     return prod;
 }
 
-
+template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::operator*(const TField & _scalar, numerical_analysis::Matrix<TField> & _rhs) {
-
+    Matrix<TField> prod {rows, cols, 0};
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            prod.set(i, j, data[i][j] * _scalar);
+        } 
+    }
+    return prod;
 }
 
+template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::operator*(numerical_analysis::Matrix<TField> & _rhs, const TField & _scalar) {
-
+    return (_scalar)*(_rhs);
 }
 
+template<typename TField>
 numerical_analysis::Matrix<TField> & numerical_analysis::operator*=(const TField & _scalar) {
-
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            data[i][j] =  data[i][j] * _scalar;
+        } 
+    }
+    return *this;   
 }
