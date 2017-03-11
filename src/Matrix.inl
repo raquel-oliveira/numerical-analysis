@@ -41,6 +41,36 @@ numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) : cols {
 }
 
 template<typename TField>
+numerical_analysis::Matrix<TField>::Matrix(const std::initializer_list<std::initializer_list<TField>> & l) : data{nullptr} {
+    this->rows = l.size();
+    
+    if (this->rows == 0)
+        throw std::invalid_argument("Zero lines not allowed!");
+    else {
+        this->cols = l.begin()->size();
+        if (this->cols == 0)
+            throw std::invalid_argument("Zero columns not allowed!");
+        else {
+            this->data = new TField * [this->rows]; 
+            for (int i = 0; i < this->rows; ++i)
+                this->data[i] = new TField[this->cols];
+        }
+    }
+
+    int i = 0; 
+    for (auto r : l) {
+       int j = 0;
+       if (r.size() != this->cols)
+           throw std::logic_error("Some element of the matrix is missing!");
+       for (auto e : r) {
+           data[i][j] = e;
+           ++j;
+       }
+       ++i;
+    } 
+}
+
+template<typename TField>
 numerical_analysis::Matrix<TField>::~Matrix() {
     if (data != nullptr) {
         for (int i = 0; i < this->rows; ++i)

@@ -66,6 +66,13 @@ class Matrix {
         Matrix(const int & _m);
 
         /**
+         * Constructor which takes an initializer list.
+         *
+         * @param l             Initializer list with matrix elements.
+         * */
+        Matrix(const std::initializer_list<std::initializer_list<TField>> & l);
+
+        /**
          * Copy constructor.
          *
          * */
