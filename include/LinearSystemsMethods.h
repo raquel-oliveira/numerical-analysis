@@ -1,6 +1,8 @@
 #ifndef _METHODS_
 #define _METHODS_
 
+#include "Matrix.h"
+
 /**
  * Contains various numerical methods for
  * linear systems.
@@ -24,7 +26,7 @@ class LinearSystemsMethods {
          * @param L             Lower triangular matrix after decomposition.
          * @param U             Upper triangular matrix after decomposition.
          * */
-        void getLU(const Matrix<TField> & source,
+        static void getLU(const Matrix<TField> & source,
                    Matrix<TField> & L,
                    Matrix<TField> & U);
 
@@ -37,7 +39,7 @@ class LinearSystemsMethods {
          * @param b             Vector.
          * @param x             Solution of the linear system.
          * */
-        void backSubstitution(const Matrix<TField> A,
+        static void backSubstitution(const Matrix<TField> A,
                               const Matrix<TField> b,
                               Matrix<TField> x);
 
@@ -48,7 +50,7 @@ class LinearSystemsMethods {
          * @param b             Vector.
          * @param x             Solution of the linear system.
          * */
-        void solveByLU(const Matrix<TField> A,
+        static void solveByLU(const Matrix<TField> A,
                               const Matrix<TField> b,
                               Matrix<TField> x);
 
@@ -59,11 +61,14 @@ class LinearSystemsMethods {
          * @param b             Vector.
          * @param x             Solution of the linear system.
          * */
-        void solveByCholesky(const Matrix<TField> A,
+        static void solveByCholesky(const Matrix<TField> A,
                               const Matrix<TField> b,
                               Matrix<TField> x);
 
 };
 
 }
+
+#include "../src/LinearSystemsMethods.inl"
+
 #endif
