@@ -3,10 +3,10 @@
 
 int main(void) {
     
-    numerical_analysis::Matrix<double> m1 {6, 6, 1}; 
+    numerical_analysis::Matrix<double> m1 {6, 6, 1.0}; 
     std::cout << m1; 
 
-    numerical_analysis::Matrix<double> m2 {6, 1};
+    numerical_analysis::Matrix<double> m2 {6, 1.0};
     std::cout << m2;
 
     numerical_analysis::Matrix<double> m3 = m1 * m2;
@@ -30,6 +30,10 @@ int main(void) {
 
     std::cout << m7;
     std::cout << m8;
+
+    m7 = 0.5 * m4;
+
+    std::cout << m7;
 
     return 0;
 }

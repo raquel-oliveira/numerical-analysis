@@ -59,6 +59,12 @@ class Matrix {
         Matrix (const int & _m, const TField & _initial);
 
         /**
+         * Copy constructor.
+         *
+         * */
+        Matrix(const Matrix<TField> & from);
+
+        /**
          * Destructor for deleting the matrix data.
          *
          * */
@@ -117,6 +123,13 @@ class Matrix {
         Matrix<TField> operator*(const Matrix<TField> & _rhs);
 
         /**
+         * Operator for assignment.
+         *
+         * @param m     The current object will be equal to m.
+         * */
+        Matrix<TField> & operator=(Matrix<TField> m);
+
+        /**
          * Operator for multiplication by scalar in the form scalar * matrix.
          *
          * @param _rhs  The scalar to left-multiply this matrix.
@@ -131,14 +144,6 @@ class Matrix {
          * */
         template<typename TFielda>
         friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
-
-        /**
-         * Operator for multiplication by scalar and assignment.
-         *
-         * @param _rhs  The scalar to right-multiply this matrix.
-         * */
-        //friend Matrix<TField> & operator*=(const TField & _scalar);
-        
 
         /**
          * Allows printing the matrix by stream.

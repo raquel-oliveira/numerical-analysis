@@ -23,10 +23,24 @@ template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const int & _m, const TField & _initial) : Matrix(_m, _m, _initial) {/* empty */}
 
 template<typename TField>
+numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) : cols {from.cols}, rows {from.rows} {
+        this->data = new TField * [from.rows]; 
+        for (int i = 0; i < from.rows; ++i)
+            this->data[i] = new TField[from.cols];
+        for (int i = 0; i < from.rows; ++i) {
+            for (int j = 0; j < from.cols; ++j) {
+                this->data[i][j] = from.at(i, j);
+            }
+        }
+}
+
+template<typename TField>
 numerical_analysis::Matrix<TField>::~Matrix() {
-    for (int i = 0; i < rows; ++i)
-        delete [] data[i];
-    delete [] data;
+    if (data != nullptr) {
+        for (int i = 0; i < this->rows; ++i)
+            delete [] this->data[i];
+        delete [] this->data;
+    }
 }
 
 template<typename TField>
@@ -104,6 +118,26 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator*
         }
     }
     return prod;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operator=(Matrix<TField> m) {
+    if (m.cols != this->cols || m.rows != this->rows) {
+        for (int i = 0; i < this->rows; ++i)
+            delete [] this->data[i];
+        delete [] this->data;
+        this->data = new TField * [m.rows]; 
+        for (int i = 0; i < m.rows; ++i)
+            this->data[i] = new TField[m.cols];
+    }
+    for (int i = 0; i < m.rows; ++i) {
+        for (int j = 0; j < m.cols; ++j) {
+            this->data[i][j] = m.at(i, j);
+        }
+    }
+    this->cols = m.cols;
+    this->rows = m.rows;
+    return *(this);
 }
 
 template<typename TField>
