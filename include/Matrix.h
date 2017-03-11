@@ -59,6 +59,13 @@ class Matrix {
         Matrix (const int & _m, const TField & _initial);
 
         /**
+         * Constructor for an m x m identity matrix.
+         *
+         * @param _m            Dimension of the identity matrix.
+         * */
+        Matrix(const int & _m);
+
+        /**
          * Copy constructor.
          *
          * */

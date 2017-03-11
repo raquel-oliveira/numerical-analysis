@@ -35,5 +35,8 @@ int main(void) {
 
     std::cout << m7;
 
+    numerical_analysis::Matrix<double> m9 {5};
+    std::cout << m9;
+
     return 0;
 }

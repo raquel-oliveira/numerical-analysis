@@ -23,6 +23,12 @@ template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const int & _m, const TField & _initial) : Matrix(_m, _m, _initial) {/* empty */}
 
 template<typename TField>
+numerical_analysis::Matrix<TField>::Matrix(const int & _m) : Matrix(_m, _m, 0) {
+    for (int i = 0; i < _m; ++i)
+        this->data[i][i] = 1;
+}
+
+template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) : cols {from.cols}, rows {from.rows} {
         this->data = new TField * [from.rows]; 
         for (int i = 0; i < from.rows; ++i)
