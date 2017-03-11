@@ -1,6 +1,8 @@
 #ifndef _MATRIX_
 #define _MATRIX_
 
+#include <iostream>
+
 /**
  * Represents an m x n matrix, with its data and operations.
  *
@@ -30,7 +32,7 @@ class Matrix {
 
     private:
 
-        TField * data;          /*< Matrix data. */
+        TField ** data;          /*< Matrix data. */
 
     public:
         
@@ -119,6 +121,7 @@ class Matrix {
          *
          * @param _rhs  The scalar to left-multiply this matrix.
          * */
+        template<typename TFielda>
         friend Matrix<TField> operator*(const TField & _scalar, Matrix<TField> & _rhs);
 
         /**
@@ -126,6 +129,7 @@ class Matrix {
          *
          * @param _rhs  The scalar to right-multiply this matrix.
          * */
+        template<typename TFielda>
         friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
 
         /**
@@ -133,7 +137,17 @@ class Matrix {
          *
          * @param _rhs  The scalar to right-multiply this matrix.
          * */
-        friend Matrix<TField> & operator*=(const TField & _scalar);
+        //friend Matrix<TField> & operator*=(const TField & _scalar);
+        
+
+        /**
+         * Allows printing the matrix by stream.
+         *
+         * @param os            Output stream.
+         * @param matrix        Matrix to be printed.
+         * */
+        template<typename TFielda>
+        friend std::ostream& operator<<(std::ostream& os, const Matrix<TField>& matrix);
 
 };
 

@@ -1,14 +1,16 @@
 #include "Matrix.h"
+#include <stdexcept>
+#include <iostream>
 
 template<typename TField>
-numerical_analysis::Matrix (const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
+numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
 
     // Test nullity of number of cols and rows
     if (!_m or !_n) 
         throw std::logic_error("A matrix cannot have zero rows or columns.");
 
     // Create data and populate it
-    data = new TField * [_m];
+    data = new TField* [_m];
     for (int i = 0; i < _m; ++i) {
         *(data + i) = new TField[_n];
         for (int j = 0; j < _n; ++j) {
@@ -18,15 +20,17 @@ numerical_analysis::Matrix (const int & _m, const int & _n, const TField & _init
 }
 
 template<typename TField>
-numerical_analysis::Matrix (const int & _m, const TField & _initial) : Matrix(m, m, _initial) { }
+numerical_analysis::Matrix<TField>::Matrix(const int & _m, const TField & _initial) : Matrix(_m, _m, _initial) {/* empty */}
 
 template<typename TField>
-numerical_analysis::Matrix::~Matrix() {
-    for (int i = 0; i < _m; ++i)
-        delete [] (data + i);
+numerical_analysis::Matrix<TField>::~Matrix() {
+    for (int i = 0; i < rows; ++i)
+        delete [] data[i];
+    delete [] data;
 }
 
-void numerical_analysis::Matrix::set(const int & i, const int & j, const int & value) {
+template<typename TField>
+void numerical_analysis::Matrix<TField>::set(const int & i, const int & j, const int & value) {
     data[i][j] = value;
 }
 
@@ -37,10 +41,12 @@ const TField & numerical_analysis::Matrix<TField>::at(const int & i, const int &
 
 template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator+(const Matrix & _rhs) {
+    if (rows != _rhs.rows || cols != _rhs.cols)
+        throw std::logic_error("Matrices must have the same size!");
     Matrix<TField> sum {rows, cols, 0};
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            sum.set(i, j, this->data[i][j] + _rhs.get(i, j));  
+            sum.set(i, j, this->data[i][j] + _rhs.at(i, j));  
         }
     }
     return sum;
@@ -48,9 +54,11 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator+
 
 template<typename TField>
 numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operator+=(const Matrix<TField> & _rhs) {
+    if (rows != _rhs.rows || cols != _rhs.cols)
+        throw std::logic_error("Matrices must have the same size!");
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            this->data[i][j] += _rhs.get(i, j);  
+            this->data[i][j] += _rhs.at(i, j);  
         }
     }   
     return *this;
@@ -58,10 +66,12 @@ numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operato
 
 template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator-(const Matrix<TField> & _rhs) {
+    if (rows != _rhs.rows || cols != _rhs.cols)
+        throw std::logic_error("Matrices must have the same size!");
     Matrix<TField> diff {rows, cols, 0};
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            diff.set(i, j, this->data[i][j] - _rhs.get(i, j));  
+            diff.set(i, j, this->data[i][j] - _rhs.at(i, j));  
         }
     }
     return diff;
@@ -69,9 +79,11 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator-
 
 template<typename TField>
 numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operator-=(const Matrix<TField> & _rhs) {
+    if (rows != _rhs.rows || cols != _rhs.cols)
+        throw std::logic_error("Matrices must have the same size!");
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            this->data[i][j] -= _rhs.get(i, j);  
+            this->data[i][j] -= _rhs.at(i, j);  
         }
     }   
     return *this;
@@ -80,14 +92,14 @@ numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operato
 template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator*(const Matrix<TField> & _rhs) {
     // Check multiplication condition
-    if (rows != _rhs.cols) throw std::logic_error("You must provide matrices mxn and nxp.");
-
+    if (cols != _rhs.rows) 
+        throw std::logic_error("You must provide matrices mxn and nxp.");
     // Multiply
     Matrix<TField> prod {rows, _rhs.cols, 0};
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             for (int k = 0; k < cols; ++k) {
-                prod[i][j] += this->data[i][k] * _rhs.get(k, j); 
+                prod.set(i, j, prod.at(i, j) + this->data[i][k] * _rhs.at(k, j)); 
             }   
         }
     }
@@ -95,27 +107,29 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator*
 }
 
 template<typename TField>
-numerical_analysis::Matrix<TField> numerical_analysis::operator*(const TField & _scalar, numerical_analysis::Matrix<TField> & _rhs) {
-    Matrix<TField> prod {rows, cols, 0};
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            prod.set(i, j, data[i][j] * _scalar);
+numerical_analysis::Matrix<TField> operator*(const TField & _scalar, numerical_analysis::Matrix<TField> & _rhs) {
+    numerical_analysis::Matrix<TField> prod {_rhs.rows, _rhs.cols, 0};
+    for (int i = 0; i < _rhs.rows; ++i) {
+        for (int j = 0; j < _rhs.cols; ++j) {
+            prod.set(i, j, _rhs.at(i,j) * _scalar);
         } 
     }
     return prod;
 }
 
 template<typename TField>
-numerical_analysis::Matrix<TField> numerical_analysis::operator*(numerical_analysis::Matrix<TField> & _rhs, const TField & _scalar) {
+numerical_analysis::Matrix<TField> operator*(numerical_analysis::Matrix<TField> & _rhs, const TField & _scalar) {
     return (_scalar)*(_rhs);
 }
 
+
 template<typename TField>
-numerical_analysis::Matrix<TField> & numerical_analysis::operator*=(const TField & _scalar) {
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            data[i][j] =  data[i][j] * _scalar;
-        } 
+std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix) {
+    for (int i = 0; i < matrix.rows; ++i) {
+        for (int j = 0; j < matrix.cols; ++j) {
+            os << matrix.at(i, j) << " ";
+        }
+        os << std::endl;
     }
-    return *this;   
+    os << std::endl;
 }
