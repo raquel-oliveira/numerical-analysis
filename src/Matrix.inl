@@ -30,7 +30,7 @@ numerical_analysis::Matrix<TField>::Matrix(const int & _m) : Matrix(_m, _m, 0) {
 }
 
 template<typename TField>
-numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) : cols {from.cols}, rows {from.rows} {
+numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) :  rows {from.rows}, cols {from.cols} {
         this->data = new TField * [from.rows]; 
         for (int i = 0; i < from.rows; ++i)
             this->data[i] = new TField[from.cols];
@@ -61,7 +61,7 @@ numerical_analysis::Matrix<TField>::Matrix(const std::initializer_list<std::init
     int i = 0; 
     for (auto r : l) {
        int j = 0;
-       if (r.size() != this->cols)
+       if ((int) r.size() != this->cols)
            throw std::logic_error("Some element of the matrix is missing!");
        for (auto e : r) {
            data[i][j] = e;
@@ -210,4 +210,5 @@ std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TFie
         os << std::endl;
     }
     os << std::endl;
+    return os;
 }
