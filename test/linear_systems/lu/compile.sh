@@ -1,1 +1,1 @@
-g++ lu.cpp -o lu -I "../../../include/" -std=c++11 -Wall
+g++ lu.cpp -o "../../../bin/lu" -I "../../../include/" -std=c++11 -Wall
