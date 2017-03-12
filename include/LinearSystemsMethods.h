@@ -1,6 +1,8 @@
 #ifndef _METHODS_
 #define _METHODS_
 
+#include "Matrix.h"
+
 /**
  * Contains various numerical methods for
  * linear systems.
@@ -21,11 +23,13 @@ class LinearSystemsMethods {
          * pivoting.
          *
          * @param source        Matrix to be decomposed.
-         * @param L             Lower triangular matrix after decomposition.
+         * @param b             In case of solving a linear system, it's the b on Ax=b.
+         * @param Linv          Inverse of lower triangular matrix after decomposition.
          * @param U             Upper triangular matrix after decomposition.
          * */
-        void getLU(const Matrix<TField> & source,
-                   Matrix<TField> & L,
+        static void getLinvU(const Matrix<TField> & source,
+                   Matrix<TField> & b,
+                   Matrix<TField> & Linv,
                    Matrix<TField> & U);
 
         /**
@@ -37,9 +41,9 @@ class LinearSystemsMethods {
          * @param b             Vector.
          * @param x             Solution of the linear system.
          * */
-        void backSubstitution(const Matrix<TField> A,
+        static void backSubstitution(const Matrix<TField> A,
                               const Matrix<TField> b,
-                              Matrix<TField> x);
+                              Matrix<TField> & x);
 
         /**
          * Solve a linear system by LU decomposition only.
@@ -48,9 +52,9 @@ class LinearSystemsMethods {
          * @param b             Vector.
          * @param x             Solution of the linear system.
          * */
-        void solveByLU(const Matrix<TField> A,
-                              const Matrix<TField> b,
-                              Matrix<TField> x);
+        static void solveByLU(const Matrix<TField> A,
+                              Matrix<TField> b,
+                              Matrix<TField> & x);
 
         /**
          * Solve a linear system by Cholesky decomposition.
@@ -59,11 +63,14 @@ class LinearSystemsMethods {
          * @param b             Vector.
          * @param x             Solution of the linear system.
          * */
-        void solveByCholesky(const Matrix<TField> A,
+        static void solveByCholesky(const Matrix<TField> A,
                               const Matrix<TField> b,
                               Matrix<TField> x);
 
 };
 
 }
+
+#include "../src/LinearSystemsMethods.inl"
+
 #endif

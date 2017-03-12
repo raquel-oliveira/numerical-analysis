@@ -1,6 +1,8 @@
 #ifndef _MATRIX_
 #define _MATRIX_
 
+#include <iostream>
+
 /**
  * Represents an m x n matrix, with its data and operations.
  *
@@ -30,7 +32,7 @@ class Matrix {
 
     private:
 
-        TField * data;          /*< Matrix data. */
+        TField ** data;          /*< Matrix data. */
 
     public:
         
@@ -57,6 +59,26 @@ class Matrix {
         Matrix (const int & _m, const TField & _initial);
 
         /**
+         * Constructor for an m x m identity matrix.
+         *
+         * @param _m            Dimension of the identity matrix.
+         * */
+        Matrix(const int & _m);
+
+        /**
+         * Constructor which takes an initializer list.
+         *
+         * @param l             Initializer list with matrix elements.
+         * */
+        Matrix(const std::initializer_list<std::initializer_list<TField>> & l);
+
+        /**
+         * Copy constructor.
+         *
+         * */
+        Matrix(const Matrix<TField> & from);
+
+        /**
          * Destructor for deleting the matrix data.
          *
          * */
@@ -77,7 +99,15 @@ class Matrix {
          * @param j     Element column.
          * @param value New value.
          * */
-        void set(const int & i, const int & j, const int & value);
+        void set(const int & i, const int & j, const TField & value);
+
+        /**
+         * Swap two lines of the matrix.
+         *
+         * @param i     One line.
+         * @param j     Another line.
+         * */
+        void swap_lines(const int & i, const int & j);
 
         /**
          * Operator for matrix addition.
@@ -115,17 +145,18 @@ class Matrix {
         Matrix<TField> operator*(const Matrix<TField> & _rhs);
 
         /**
-         * Operator for multiplication and assignment.
+         * Operator for assignment.
          *
-         * @param _rhs  The matrix to right-multiply this matrix.
+         * @param m     The current object will be equal to m.
          * */
-        Matrix<TField> & operator*=(const Matrix<TField> & _rhs);
+        Matrix<TField> & operator=(Matrix<TField> m);
 
         /**
          * Operator for multiplication by scalar in the form scalar * matrix.
          *
          * @param _rhs  The scalar to left-multiply this matrix.
          * */
+        template<typename TFielda>
         friend Matrix<TField> operator*(const TField & _scalar, Matrix<TField> & _rhs);
 
         /**
@@ -133,16 +164,21 @@ class Matrix {
          *
          * @param _rhs  The scalar to right-multiply this matrix.
          * */
+        template<typename TFielda>
         friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
 
         /**
-         * Operator for multiplication by scalar and assignment.
+         * Allows printing the matrix by stream.
          *
-         * @param _rhs  The scalar to right-multiply this matrix.
+         * @param os            Output stream.
+         * @param matrix        Matrix to be printed.
          * */
-        friend Matrix<TField> & operator*=(const TField & _scalar);
+        template<typename TFielda>
+        friend std::ostream& operator<<(std::ostream& os, const Matrix<TField>& matrix);
 
 };
 
 }
+
+#include "../src/Matrix.inl"
 #endif
