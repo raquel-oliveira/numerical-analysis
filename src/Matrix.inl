@@ -1,6 +1,7 @@
 #include "Matrix.h"
 #include <stdexcept>
 #include <iostream>
+#include <iomanip>
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
@@ -80,13 +81,20 @@ numerical_analysis::Matrix<TField>::~Matrix() {
 }
 
 template<typename TField>
-void numerical_analysis::Matrix<TField>::set(const int & i, const int & j, const int & value) {
+void numerical_analysis::Matrix<TField>::set(const int & i, const int & j, const TField & value) {
     data[i][j] = value;
 }
 
 template<typename TField>
 const TField & numerical_analysis::Matrix<TField>::at(const int & i, const int & j) const {
     return data[i][j];
+}
+
+template<typename TField>
+void numerical_analysis::Matrix<TField>::swap_lines(const int & i, const int & j) {
+    for (int c = 0; c < this->cols; ++c) {
+        std::swap(data[i][c], data[j][c]);
+    }
 }
 
 template<typename TField>
@@ -197,7 +205,7 @@ template<typename TField>
 std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix) {
     for (int i = 0; i < matrix.rows; ++i) {
         for (int j = 0; j < matrix.cols; ++j) {
-            os << matrix.at(i, j) << " ";
+            os << std::setprecision(6) << matrix.at(i, j) << " ";
         }
         os << std::endl;
     }

@@ -99,7 +99,15 @@ class Matrix {
          * @param j     Element column.
          * @param value New value.
          * */
-        void set(const int & i, const int & j, const int & value);
+        void set(const int & i, const int & j, const TField & value);
+
+        /**
+         * Swap two lines of the matrix.
+         *
+         * @param i     One line.
+         * @param j     Another line.
+         * */
+        void swap_lines(const int & i, const int & j);
 
         /**
          * Operator for matrix addition.
