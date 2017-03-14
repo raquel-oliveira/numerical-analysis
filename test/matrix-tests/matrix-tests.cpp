@@ -40,7 +40,7 @@ int main(void) {
 
     // Testing [] operator
 	std::cout << m9[1][0] << std::endl;
-	m9[1][0] = 4;
+	m9[4][0] = 4;
 	std::cout << m9[1][0] << std::endl;
 	
     return 0;
