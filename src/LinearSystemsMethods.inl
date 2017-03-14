@@ -15,7 +15,7 @@ void numerical_analysis::LinearSystemsMethods<TField>::getLinvU(const Matrix<TFi
         int maxp = i;
         
         for (int j = i + 1; j < source.rows; ++j) {
-            if (UTemp.at(j, i) > UTemp.at(maxp,i))
+            if (UTemp[j][i] > UTemp[maxp][i])
                 maxp = j;
         }
         UTemp.swap_lines(i, maxp);
@@ -23,7 +23,7 @@ void numerical_analysis::LinearSystemsMethods<TField>::getLinvU(const Matrix<TFi
 
         numerical_analysis::Matrix<double> Gi {source.rows}; 
         for (int j = i + 1; j < source.rows; ++j) {
-            Gi.set(j, i, -(UTemp.at(j, i)/UTemp.at(i, i)));
+            Gi[j][i] = -(UTemp[j][i]/UTemp[i][i]);
         }
         LinvTemp = Gi * LinvTemp;
         UTemp = Gi * UTemp;
@@ -40,11 +40,11 @@ void numerical_analysis::LinearSystemsMethods<TField>::backSubstitution(const Ma
                       Matrix<TField> & x) {
     numerical_analysis::Matrix<double> xTemp {1, b.rows, 0};
     for (int i = A.rows - 1; i >= 0; --i) {
-        xTemp.set(0, i, b.at(i, 0));
+        xTemp[0][i] = b[i][0];
         for (int j = i + 1; j < A.cols; ++j) {
-            xTemp.set(0, i, xTemp.at(0, i) - xTemp.at(0, j)*A.at(i, j));
+            xTemp[0][i] = xTemp[0][i] - xTemp[0][j]*A[i][j];
         } 
-        xTemp.set(0, i, xTemp.at(0, i)/A.at(i, i));
+        xTemp[0][i] = xTemp[0][i]/A[i][i];
     }
     x = xTemp;
 }
