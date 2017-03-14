@@ -176,6 +176,14 @@ class Matrix {
         template<typename TFielda>
         friend std::ostream& operator<<(std::ostream& os, const Matrix<TField>& matrix);
 
+        /**
+         * Method to transpose a matrix and return it.
+         *
+         * @return Matrix<TField> Matrix transposed.  
+         * */
+        Matrix<TField> transpose() const;
+
+
 };
 
 }

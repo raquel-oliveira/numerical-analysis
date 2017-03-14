@@ -212,3 +212,16 @@ std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TFie
     os << std::endl;
     return os;
 }
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose() const{
+
+    numerical_analysis::Matrix<TField> transposed {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+            transposed.set(j,i,this->data[i][j]);
+        }
+    }
+
+    return transposed;
+}
