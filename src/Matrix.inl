@@ -225,3 +225,19 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose
 
     return transposed;
 }
+
+template<typename TField>
+bool numerical_analysis::Matrix<TField>::isSymmetric() const{
+    if(this->rows != this->cols) {
+        return false;
+    }else{
+        for(int i = 0; i < this->rows; ++i){
+            for(int j = i+1; j < this->cols; ++j){
+                if(this->data[i][j] != this->data[j][i]) 
+                    return false;
+            }
+        }
+    }
+
+    return true;
+}

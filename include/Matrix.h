@@ -183,6 +183,13 @@ class Matrix {
          * */
         Matrix<TField> transpose() const;
 
+        /**
+         * Method to check if a matrix is symmetric.
+         * 
+         * @return bool         Status if the matrix is symmetric.
+         * */
+        bool isSymmetric() const;
+
 
 };
 
