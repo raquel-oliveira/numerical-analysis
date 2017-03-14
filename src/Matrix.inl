@@ -31,14 +31,14 @@ numerical_analysis::Matrix<TField>::Matrix(const int & _m) : Matrix(_m, _m, 0) {
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) :  rows {from.rows}, cols {from.cols} {
-        this->data = new TField * [from.rows]; 
-        for (int i = 0; i < from.rows; ++i)
-            this->data[i] = new TField[from.cols];
-        for (int i = 0; i < from.rows; ++i) {
-            for (int j = 0; j < from.cols; ++j) {
-                this->data[i][j] = from[i][j];
-            }
+    this->data = new TField * [from.rows]; 
+    for (int i = 0; i < from.rows; ++i)
+        this->data[i] = new TField[from.cols];
+    for (int i = 0; i < from.rows; ++i) {
+        for (int j = 0; j < from.cols; ++j) {
+            this->data[i][j] = from[i][j];
         }
+    }
 }
 
 template<typename TField>
@@ -99,16 +99,16 @@ void numerical_analysis::Matrix<TField>::swap_lines(const int & i, const int & j
 
 template<typename TField>
 TField * & numerical_analysis::Matrix<TField>::operator[](const int & i) {
-	if (i < 0 || i >= rows)
-		throw std::logic_error("Accessing position out of bounds.");
-	return data[i];
+    if (i < 0 || i >= rows)
+            throw std::logic_error("Accessing position out of bounds.");
+    return data[i];
 }
 
 template<typename TField>
 TField * numerical_analysis::Matrix<TField>::operator[](const int & i) const {
-	if (i < 0 || i >= rows)
-		throw std::logic_error("Accessing position out of bounds.");
-	return data[i];
+    if (i < 0 || i >= rows)
+            throw std::logic_error("Accessing position out of bounds.");
+    return data[i];
 }
 
 

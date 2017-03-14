@@ -109,31 +109,31 @@ class Matrix {
          * */
         void swap_lines(const int & i, const int & j);
 
-		/**
-		 * Operator [] for accessing rows of a matrix. This
-		 * returns a reference.
-		 *
-	     * Since arrays have [] access defined, 
-         * this overload allows using [][] for accessing and
-		 * modifying matrix elements.
-		 *
-		 * @param j		Row index.
-	     * @return 		Pointer to the first element of the row.
-		 **/
-		TField * & operator[](const int & i);
+        /**
+        * Operator [] for accessing rows of a matrix. This
+        * returns a reference.
+        *
+        * Since arrays have [] access defined, 
+        * this overload allows using [][] for accessing and
+        * modifying matrix elements.
+        *
+        * @param j		Row index.
+        * @return 		Pointer to the first element of the row.
+        **/
+        TField * & operator[](const int & i);
 
-		/**
-		 * Operator [] for accessing rows of a matrix. This
-		 * returns a copy.
-		 *
-	     * Since arrays have [] access defined, 
-         * this overload allows using [][] for accessing
-		 * matrix elements.
-		 *
-		 * @param j		Row index.
-	     * @return 		Pointer to the first element of the row.
-		 **/
-		TField * operator[](const int & i) const;
+        /**
+        * Operator [] for accessing rows of a matrix. This
+        * returns a copy.
+        *
+        * Since arrays have [] access defined, 
+        * this overload allows using [][] for accessing
+        * matrix elements.
+        *
+        * @param j		Row index.
+        * @return 		Pointer to the first element of the row.
+        **/
+        TField * operator[](const int & i) const;
 
         /**
          * Operator for matrix addition.
@@ -192,6 +192,7 @@ class Matrix {
          * */
         template<typename TFielda>
         friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
+
         /**
          * Method to transpose a matrix and return it.
          *
@@ -210,7 +211,6 @@ class Matrix {
 	 * */
 	template<typename TField>
 	std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix);
-
 
 }
 
