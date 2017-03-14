@@ -217,7 +217,7 @@ numerical_analysis::Matrix<TField> operator*(numerical_analysis::Matrix<TField> 
 
 
 template<typename TField>
-std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix) {
+std::ostream& numerical_analysis::operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix) {
     for (int i = 0; i < matrix.rows; ++i) {
         for (int j = 0; j < matrix.cols; ++j) {
             os << std::setprecision(6) << matrix[i][j] << " ";

@@ -192,16 +192,6 @@ class Matrix {
          * */
         template<typename TFielda>
         friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
-
-        /**
-         * Allows printing the matrix by stream.
-         *
-         * @param os            Output stream.
-         * @param matrix        Matrix to be printed.
-         * */
-        template<typename TFielda>
-        friend std::ostream& operator<<(std::ostream& os, const Matrix<TField>& matrix);
-
         /**
          * Method to transpose a matrix and return it.
          *
@@ -211,6 +201,16 @@ class Matrix {
 
 
 };
+
+	/**
+	 * Allows printing the matrix by stream.
+	 *
+	 * @param os            Output stream.
+	 * @param matrix        Matrix to be printed.
+	 * */
+	template<typename TField>
+	std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix);
+
 
 }
 

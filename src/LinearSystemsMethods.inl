@@ -28,6 +28,8 @@ void numerical_analysis::LinearSystemsMethods<TField>::getLinvU(const Matrix<TFi
         LinvTemp = Gi * LinvTemp;
         UTemp = Gi * UTemp;
         b = Gi * b;
+
+		std::cout << b;
     }
 
     U = UTemp;
