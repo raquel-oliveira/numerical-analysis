@@ -181,7 +181,7 @@ class Matrix {
          *
          * @return Matrix<TField> Matrix transposed.  
          * */
-        const Matrix<TField> transpose();
+        Matrix<TField> transpose() const;
 
 
 };
