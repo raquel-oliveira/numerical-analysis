@@ -109,6 +109,18 @@ class Matrix {
          * */
         void swap_lines(const int & i, const int & j);
 
+		/**
+		 * Operator [] for accessing rows of a matrix.
+
+	     * Since arrays have [] access defined, 
+         * this overload allows using [][] for accessing
+		 * matrix elements.
+		 *
+		 * @param j		Row index.
+	     * @return 		Pointer to the first element of the row.
+		 **/
+		TField * & operator[](const int & i);
+
         /**
          * Operator for matrix addition.
          *
