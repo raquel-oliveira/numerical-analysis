@@ -38,5 +38,10 @@ int main(void) {
     numerical_analysis::Matrix<double> m9 {5};
     std::cout << m9;
 
+    // Testing [] operator
+	std::cout << m9[1][0] << std::endl;
+	m9[1][0] = 4;
+	std::cout << m9[1][0] << std::endl;
+	
     return 0;
 }

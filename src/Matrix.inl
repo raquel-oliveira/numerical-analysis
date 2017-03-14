@@ -98,6 +98,11 @@ void numerical_analysis::Matrix<TField>::swap_lines(const int & i, const int & j
 }
 
 template<typename TField>
+TField * & numerical_analysis::Matrix<TField>::operator[](const int & i) {
+	return data[i];
+}
+
+template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator+(const Matrix & _rhs) {
     if (rows != _rhs.rows || cols != _rhs.cols)
         throw std::logic_error("Matrices must have the same size!");
