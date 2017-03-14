@@ -214,7 +214,7 @@ std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TFie
 }
 
 template<typename TField>
-numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose(){
+const numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose(){
 
     numerical_analysis::Matrix<TField> transposed {this->cols, this->rows, 0};
     for(int i = 0; i < rows; ++i){
