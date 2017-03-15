@@ -63,7 +63,21 @@ void numerical_analysis::LinearSystemsMethods<TField>::solveByLU(const Matrix<TF
 
 template<typename TField>
 void numerical_analysis::LinearSystemsMethods<TField>::solveByCholesky(const Matrix<TField> A,
-                      const Matrix<TField> b,
-                      Matrix<TField> x) {
+                      Matrix<TField> b,
+                      Matrix<TField> & x) {
 
+    numerical_analysis::Matrix<TField> Linv {A.rows, 1};
+    numerical_analysis::Matrix<TField> U {A.rows, 1};
+    numerical_analysis::LinearSystemsMethods<TField>::getLinvU(A, b, Linv, U);
+
+    numerical_analysis::Matrix<TField> Dinv {U.rows, U.cols, 0};
+
+    for(int i = 0; i < U.cols; ++i){
+        if(U.at(i,i) < 0) 
+            throw std::logic_error("A matrix cannot have negative values on diagonal."); 
+        else 
+            Dinv.set(i,i, 1 / U.at(i,i));
+    }
+
+    x = Linv.transpose() * Dinv * b;
 }
