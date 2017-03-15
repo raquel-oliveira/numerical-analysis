@@ -64,8 +64,8 @@ class LinearSystemsMethods {
          * @param x             Solution of the linear system.
          * */
         static void solveByCholesky(const Matrix<TField> A,
-                              const Matrix<TField> b,
-                              Matrix<TField> x);
+                              Matrix<TField> b,
+                              Matrix<TField> &x);
 
 };
 
