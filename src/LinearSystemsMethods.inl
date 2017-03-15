@@ -72,11 +72,11 @@ void numerical_analysis::LinearSystemsMethods<TField>::solveByCholesky(const Mat
 
     numerical_analysis::Matrix<TField> Dinv {U.rows, U.cols, 0};
 
-    for(int i = 0; i < U.cols; ++i){
-        if(U.at(i,i) < 0) 
+    for(int i = 0; i < U.cols; ++i) {
+        if(U[i][i] < 0) 
             throw std::logic_error("A matrix cannot have negative values on diagonal."); 
         else 
-            Dinv.set(i,i, 1 / U.at(i,i));
+            Dinv[i][i] =  1 / U[i][i];
     }
 
     x = Linv.transpose() * Dinv * b;
