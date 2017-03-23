@@ -1,4 +1,4 @@
-#include "LinearSystemsMethods.h"
+#include "NaiveLinearSystemSolver.h"
 #include "Matrix.h"
 #include <iostream>
 
@@ -18,7 +18,7 @@ int main(void) {
     std::cout << b;
 
     numerical_analysis::Matrix<double> x {1, b.rows, 0};
-    numerical_analysis::LinearSystemsMethods<double>::solveByCholesky(A, b, x);
+    numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_cholesky(A, b, x);
 
     std::cout << x;
 

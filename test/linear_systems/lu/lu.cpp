@@ -18,7 +18,7 @@ int main(void) {
     std::cout << b;
 
     numerical_analysis::Matrix<double> x {1, b.rows, 0};
-    numerical_analysis::LinearSystemsMethods<double>::solveByLU(A, b, x);
+    numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_lu(A, b, x);
 
     std::cout << x;
 
