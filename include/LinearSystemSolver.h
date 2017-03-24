@@ -68,4 +68,5 @@ namespace numerical_analysis {
 
 };
 
+#include "../src/LinearSystemSolver.inl"
 #endif

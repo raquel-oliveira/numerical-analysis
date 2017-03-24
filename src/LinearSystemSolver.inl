@@ -26,7 +26,7 @@ void numerical_analysis::LinearSystemSolver<TField>::forward_substitution (
 
 
 template<typename TField>
-static void numerical_analysi::LinearSystemSolver<TField>::solve_by_lu(const Matrix<TField> A,
+void numerical_analysis::LinearSystemSolver<TField>::solve_by_lu(const Matrix<TField> A,
 					  Matrix<TField> b,
 					  Matrix<TField> & x) {
 
@@ -34,7 +34,7 @@ static void numerical_analysi::LinearSystemSolver<TField>::solve_by_lu(const Mat
 
 
 template<typename TField>
-static void numerical_analysi::LinearSystemSolver<TField>::solve_by_cholesky(const Matrix<TField> A,
+void numerical_analysis::LinearSystemSolver<TField>::solve_by_cholesky(const Matrix<TField> A,
 					  Matrix<TField> b,
 					  Matrix<TField> &x) {
 
