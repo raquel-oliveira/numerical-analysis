@@ -256,3 +256,19 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::diagonal(
 
     return d;
 }
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::symmetric() const{
+
+    numerical_analysis::Matrix<TField> s {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+                if (this->data[i][j] == 0){
+                    s[i][j] = 0; // for some reason -1*0 = -0
+                } else {
+                    s[i][j] = -1*this->data[i][j];
+                }
+        }
+    }
+    return s;
+}

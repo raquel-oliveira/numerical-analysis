@@ -208,6 +208,13 @@ class Matrix {
          * */
         Matrix<TField> diagonal() const;
 
+        /**
+         * Method to return the matrix simetric.
+         *
+         * @return Matrix<TField> Matrix simetric.  
+         * */
+        Matrix<TField> symmetric() const;
+
 };
 
 	/**
