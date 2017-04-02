@@ -92,7 +92,7 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(const 
 		numerical_analysis::Matrix<TField> de {A.rows, 1};
 		numerical_analysis::Matrix<TField> e = x;
 		numerical_analysis::Matrix<TField> n {e.rows, e.cols}; //check correctness
-		do {
+		while (numerical_analysis::NaiveLinearSystemSolver<double>::getNorm(n) > c) {
 			aux = e;
 			de = (A.pow(-1)).diagonal();
 
@@ -108,7 +108,7 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(const 
 			e = s;
 
 			n = e-aux;
-		} while (numerical_analysis::NaiveLinearSystemSolver<double>::getNorm(n) > c);
+		}
 		x = s;
 	}
 }
