@@ -215,6 +215,17 @@ class Matrix {
          * */
         Matrix<TField> symmetric() const;
 
+        /**
+         * 
+         * Method to do exponentiation of the matrix and return it
+         *
+         * The base is the data of the matrix (matrix[i][j]).
+         *
+         * @param k exponent
+         * @return Matrix<TField> Matrix
+         * */
+        Matrix<TField> pow(int k) const;
+
 };
 
 	/**
