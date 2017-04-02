@@ -61,6 +61,18 @@ namespace numerical_analysis {
 								  Matrix<TField> &x);
 
 			
+			/**
+             * Solve a linear system by Jacobi.
+             *
+             * @param A             Matrix of coefficients.
+             * @param b             Vector.
+             * @param c             Number of approximation to correctness
+             * @param x             Solution of the linear system.
+             * */
+            static void solve_by_jacobi(const Matrix<TField> A,
+                          Matrix<TField> b,
+                          double c,
+                          Matrix<TField> & x);
 	};
 
 }
