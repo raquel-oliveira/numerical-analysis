@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
@@ -239,4 +240,19 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose
     }
 
     return transposed;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::diagonal() const{
+
+    numerical_analysis::Matrix<TField> d {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+            if (i == j){
+                d[i][j] = this->data[i][j];
+            }
+        }
+    }
+
+    return d;
 }

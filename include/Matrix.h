@@ -201,6 +201,13 @@ class Matrix {
         Matrix<TField> transpose() const;
 
 
+         /**
+         * Method to get diagonal of a matrix and return it.
+         *
+         * @return Matrix<TField> Matrix diagonal.  
+         * */
+        Matrix<TField> diagonal() const;
+
 };
 
 	/**
