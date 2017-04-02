@@ -16,6 +16,12 @@ namespace numerical_analysis {
 	template<typename TField>
 	class NaiveLinearSystemSolver : public LinearSystemSolver<TField> {
 
+		private:
+			/**
+			* return the euclidean norm on a n-dimensional euclidean space R^n 
+			*/
+			static double getNorm(Matrix<TField> c);
+
 		public:
 
 			/**
@@ -54,6 +60,7 @@ namespace numerical_analysis {
 								  Matrix<TField> b,
 								  Matrix<TField> &x);
 
+			
 	};
 
 }

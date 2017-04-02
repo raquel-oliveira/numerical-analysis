@@ -1,4 +1,5 @@
 #include "NaiveLinearSystemSolver.h"
+#include <math.h>
 
 template<typename TField>
 void numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(const Matrix<TField> & source, 
@@ -65,4 +66,15 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_cholesky(cons
     }
 
     x = Linv.transpose() * Dinv * b;
+}
+
+
+template<typename TField>
+double numerical_analysis::NaiveLinearSystemSolver<TField>::getNorm(Matrix<TField> c){
+	//TODO:: verify if c has only 1 col or change to general norm
+	double sum = 0;
+	for (int i = 0; i < c.rows; ++i) {
+        sum += std::pow(c[i][0], 2);
+   	}
+   	return sqrt(sum);
 }
