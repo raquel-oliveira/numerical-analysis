@@ -3,6 +3,7 @@
 
 #include "Matrix.h"
 #include "LinearSystemSolver.h"
+#include <stdbool.h>
 
 namespace numerical_analysis {
 	/**
@@ -18,9 +19,14 @@ namespace numerical_analysis {
 
 		private:
 			/**
-			* return the euclidean norm on a n-dimensional euclidean space R^n 
+			* @return the euclidean norm on a n-dimensional euclidean space R^n 
 			*/
-			static double getNorm(Matrix<TField> c);
+			static double get_norm(Matrix<TField> c);
+
+			/*
+			* @return if it's worth find the answer using Jacobi method
+			*/
+			static bool check_jacobi(Matrix<TField> m);
 
 		public:
 
