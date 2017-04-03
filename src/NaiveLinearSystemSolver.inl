@@ -80,10 +80,11 @@ double numerical_analysis::NaiveLinearSystemSolver<TField>::getNorm(Matrix<TFiel
 }
 
 template<typename TField>
-void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(const Matrix<TField> A,
+void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix<TField> A,
 		Matrix<TField> b,
 		double c,
 		Matrix<TField> & x) {
+
 	if (c < 0 )
 		throw std::logic_error("Varepsilon can not be < 0");
 	else {
@@ -91,19 +92,13 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(const 
 		numerical_analysis::Matrix<TField> s {A.rows, 1};
 		numerical_analysis::Matrix<TField> de {A.rows, 1};
 		numerical_analysis::Matrix<TField> e = x;
-		numerical_analysis::Matrix<TField> n {e.rows, e.cols}; //check correctness
+		numerical_analysis::Matrix<TField> n {e.rows, e.cols}; //to check correctness
+
 		while (numerical_analysis::NaiveLinearSystemSolver<double>::getNorm(n) > c) {
 			aux = e;
 			de = (A.pow(-1)).diagonal();
 
-			//s = A-A.diagonal();
-			s = A;
-			for (int i = 0; i < A.rows; ++i) {
-				for (int j = 0; j < A.cols; ++j) {
-					if (i == j) s[i][j] = 0;
-				}
-			}
-
+			s = A-A.diagonal();
 			s = (de.symmetric()*s*e) + (de*b);
 			e = s;
 

@@ -69,7 +69,7 @@ namespace numerical_analysis {
              * @param c             Number of approximation to correctness
              * @param x             Solution of the linear system.
              * */
-            static void solve_by_jacobi(const Matrix<TField> A,
+            static void solve_by_jacobi(Matrix<TField> A,
                           Matrix<TField> b,
                           double c,
                           Matrix<TField> & x);
