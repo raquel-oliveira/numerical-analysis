@@ -1,13 +1,11 @@
-#include "NaiveLinearSystemSolver.h"
-
 template<typename TField>
 void numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(const Matrix<TField> & source, 
 			Matrix<TField> & b,
 			Matrix<TField> & Linv,
 			Matrix<TField> & U) {
 
-	numerical_analysis::Matrix<double> UTemp {source};
-	numerical_analysis::Matrix<double> LinvTemp {source.rows}; 
+	numerical_analysis::Matrix<TField> UTemp {source};
+	numerical_analysis::Matrix<TField> LinvTemp {source.rows}; 
 
 	// Calculate G0...Gi...Gn-2
 	for (int i = 0; i < source.cols - 1; ++i) {
@@ -21,7 +19,7 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(const Matrix
 		UTemp.swap_lines(i, maxp);
 		b.swap_lines(i, maxp);
 
-		numerical_analysis::Matrix<double> Gi {source.rows}; 
+		numerical_analysis::Matrix<TField> Gi {source.rows}; 
 		for (int j = i + 1; j < source.rows; ++j) {
 			Gi[j][i] = -(UTemp[j][i]/UTemp[i][i]);
 		}
@@ -39,10 +37,10 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_lu(const Matr
 					  Matrix<TField> b,
 					  Matrix<TField> & x) {
 
-	numerical_analysis::Matrix<double> Linv {A.rows, 1};
-	numerical_analysis::Matrix<double> U {A.rows, 1};
-	numerical_analysis::NaiveLinearSystemSolver<double>::get_linvu(A, b, Linv, U);
-	numerical_analysis::NaiveLinearSystemSolver<double>::back_substitution(U, b, x);
+	numerical_analysis::Matrix<TField> Linv {A.rows, 1};
+	numerical_analysis::Matrix<TField> U {A.rows, 1};
+	numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(A, b, Linv, U);
+	numerical_analysis::NaiveLinearSystemSolver<TField>::back_substitution(U, b, x);
 
 }
 

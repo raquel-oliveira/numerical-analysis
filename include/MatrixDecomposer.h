@@ -2,6 +2,7 @@
 #define _MATRIX_FACTORIZATION_
 
 #include "Matrix.h"
+#include <cmath>
 
 namespace numerical_analysis {
 
@@ -56,7 +57,7 @@ namespace numerical_analysis {
 		 * @param L				Lower triangular matrix such that source = L*Lt.
 		 * */
 		static void cholesky (const Matrix<TField> & source,
-				Matrix<TField> L);
+				Matrix<TField> & L);
 	};
 
 };
