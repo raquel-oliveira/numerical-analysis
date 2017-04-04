@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
@@ -31,14 +32,14 @@ numerical_analysis::Matrix<TField>::Matrix(const int & _m) : Matrix(_m, _m, 0) {
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) :  rows {from.rows}, cols {from.cols} {
-        this->data = new TField * [from.rows]; 
-        for (int i = 0; i < from.rows; ++i)
-            this->data[i] = new TField[from.cols];
-        for (int i = 0; i < from.rows; ++i) {
-            for (int j = 0; j < from.cols; ++j) {
-                this->data[i][j] = from.at(i, j);
-            }
+    this->data = new TField * [from.rows]; 
+    for (int i = 0; i < from.rows; ++i)
+        this->data[i] = new TField[from.cols];
+    for (int i = 0; i < from.rows; ++i) {
+        for (int j = 0; j < from.cols; ++j) {
+            this->data[i][j] = from[i][j];
         }
+    }
 }
 
 template<typename TField>
@@ -98,13 +99,28 @@ void numerical_analysis::Matrix<TField>::swap_lines(const int & i, const int & j
 }
 
 template<typename TField>
+TField * & numerical_analysis::Matrix<TField>::operator[](const int & i) {
+    if (i < 0 || i >= rows)
+            throw std::logic_error("Accessing position out of bounds.");
+    return data[i];
+}
+
+template<typename TField>
+TField * numerical_analysis::Matrix<TField>::operator[](const int & i) const {
+    if (i < 0 || i >= rows)
+            throw std::logic_error("Accessing position out of bounds.");
+    return data[i];
+}
+
+
+template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator+(const Matrix & _rhs) {
     if (rows != _rhs.rows || cols != _rhs.cols)
         throw std::logic_error("Matrices must have the same size!");
     Matrix<TField> sum {rows, cols, 0};
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            sum.set(i, j, this->data[i][j] + _rhs.at(i, j));  
+            sum[i][j] = this->data[i][j] + _rhs[i][j];  
         }
     }
     return sum;
@@ -116,7 +132,7 @@ numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operato
         throw std::logic_error("Matrices must have the same size!");
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            this->data[i][j] += _rhs.at(i, j);  
+            this->data[i][j] += _rhs[i][j];  
         }
     }   
     return *this;
@@ -129,7 +145,7 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator-
     Matrix<TField> diff {rows, cols, 0};
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            diff.set(i, j, this->data[i][j] - _rhs.at(i, j));  
+            diff[i][j] = this->data[i][j] - _rhs[i][j];  
         }
     }
     return diff;
@@ -141,7 +157,7 @@ numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operato
         throw std::logic_error("Matrices must have the same size!");
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            this->data[i][j] -= _rhs.at(i, j);  
+            this->data[i][j] -= _rhs[i][j]; 
         }
     }   
     return *this;
@@ -157,7 +173,7 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator*
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             for (int k = 0; k < cols; ++k) {
-                prod.set(i, j, prod.at(i, j) + this->data[i][k] * _rhs.at(k, j)); 
+                prod[i][j] = prod[i][j] + this->data[i][k] * _rhs[k][j]; 
             }   
         }
     }
@@ -176,7 +192,7 @@ numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operato
     }
     for (int i = 0; i < m.rows; ++i) {
         for (int j = 0; j < m.cols; ++j) {
-            this->data[i][j] = m.at(i, j);
+            this->data[i][j] = m[i][j];
         }
     }
     this->cols = m.cols;
@@ -189,7 +205,7 @@ numerical_analysis::Matrix<TField> operator*(const TField & _scalar, numerical_a
     numerical_analysis::Matrix<TField> prod {_rhs.rows, _rhs.cols, 0};
     for (int i = 0; i < _rhs.rows; ++i) {
         for (int j = 0; j < _rhs.cols; ++j) {
-            prod.set(i, j, _rhs.at(i,j) * _scalar);
+            prod[i][j] = _rhs[i][j] * _scalar;
         } 
     }
     return prod;
@@ -202,10 +218,10 @@ numerical_analysis::Matrix<TField> operator*(numerical_analysis::Matrix<TField> 
 
 
 template<typename TField>
-std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix) {
+std::ostream& numerical_analysis::operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix) {
     for (int i = 0; i < matrix.rows; ++i) {
         for (int j = 0; j < matrix.cols; ++j) {
-            os << std::setprecision(6) << matrix.at(i, j) << " ";
+            os << std::setprecision(6) << matrix[i][j] << " ";
         }
         os << std::endl;
     }
@@ -219,7 +235,7 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose
     numerical_analysis::Matrix<TField> transposed {this->cols, this->rows, 0};
     for(int i = 0; i < rows; ++i){
         for(int j = 0; j < cols; ++j){
-            transposed.set(j,i,this->data[i][j]);
+            transposed[j][i] = this->data[i][j];
         }
     }
 
@@ -240,4 +256,75 @@ bool numerical_analysis::Matrix<TField>::isSymmetric() const{
     }
 
     return true;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::diagonal() const{
+
+    numerical_analysis::Matrix<TField> d {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+            if (i == j){
+                d[i][j] = this->data[i][j];
+            }
+        }
+    }
+
+    return d;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::symmetric() const{
+
+    numerical_analysis::Matrix<TField> s {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+                if (this->data[i][j] == 0){
+                    s[i][j] = 0; // for some reason -1*0 = -0
+                } else {
+                    s[i][j] = -1*this->data[i][j];
+                }
+        }
+    }
+    return s;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::pow(int k) const{
+
+    numerical_analysis::Matrix<TField> p {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+                p[i][j] = std::pow(this->data[i][j], k);
+        }
+    }
+    return p;
+}
+
+template<typename TField>
+double numerical_analysis::Matrix<TField>::norm_infinity(){
+    double aux = 0;
+    double max = 0;
+    for (int i = 0; i < this->rows; i++){
+        for (int j = 0; j < this->cols; j++){
+            aux += std::abs(this->data[i][j]);
+        }
+        if (max < aux) max = aux;
+        aux = 0;
+    }
+    return max;
+}
+
+template<typename TField>
+double numerical_analysis::Matrix<TField>::norm_one(){
+    double aux = 0;
+    double max = 0;
+    for (int i = 0; i < this->cols; i++){
+        for (int j = 0; j < this->rows; j++){
+            aux += std::abs(this->data[i][j]);
+        }
+        if (max < aux) max = aux;
+        aux = 0;
+    }
+    return max;
 }

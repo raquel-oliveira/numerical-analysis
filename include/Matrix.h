@@ -110,6 +110,32 @@ class Matrix {
         void swap_lines(const int & i, const int & j);
 
         /**
+        * Operator [] for accessing rows of a matrix. This
+        * returns a reference.
+        *
+        * Since arrays have [] access defined, 
+        * this overload allows using [][] for accessing and
+        * modifying matrix elements.
+        *
+        * @param j		Row index.
+        * @return 		Pointer to the first element of the row.
+        **/
+        TField * & operator[](const int & i);
+
+        /**
+        * Operator [] for accessing rows of a matrix. This
+        * returns a copy.
+        *
+        * Since arrays have [] access defined, 
+        * this overload allows using [][] for accessing
+        * matrix elements.
+        *
+        * @param j		Row index.
+        * @return 		Pointer to the first element of the row.
+        **/
+        TField * operator[](const int & i) const;
+
+        /**
          * Operator for matrix addition.
          *
          * @param _rhs  The matrix to be added to this matrix.
@@ -168,20 +194,45 @@ class Matrix {
         friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
 
         /**
-         * Allows printing the matrix by stream.
-         *
-         * @param os            Output stream.
-         * @param matrix        Matrix to be printed.
-         * */
-        template<typename TFielda>
-        friend std::ostream& operator<<(std::ostream& os, const Matrix<TField>& matrix);
-
-        /**
          * Method to transpose a matrix and return it.
          *
          * @return Matrix<TField> Matrix transposed.  
          * */
         Matrix<TField> transpose() const;
+
+
+         /**
+         * Method to get diagonal of a matrix and return it.
+         *
+         * @return Matrix<TField> Matrix diagonal.  
+         * */
+        Matrix<TField> diagonal() const;
+
+        /**
+         * Method to return the matrix simetric.
+         *
+         * @return Matrix<TField> Matrix simetric.  
+         * */
+        Matrix<TField> symmetric() const;
+
+        /**
+         * 
+         * Method to do exponentiation of the matrix and return it
+         *
+         * The base is the data of the matrix (matrix[i][j]).
+         *
+         * @param k exponent
+         * @return Matrix<TField> Matrix
+         * */
+        Matrix<TField> pow(int k) const;
+        
+        /**
+        * Method that gives tha maximum absolute
+        * row sum of the matrix
+        
+        * @return norm inifinty
+        */
+        double norm_infinity();
 
         /**
          * Method to check if a matrix is symmetric.
@@ -190,8 +241,24 @@ class Matrix {
          * */
         bool isSymmetric() const;
 
+        /**
+        * Method that gives tha maximum absolute 
+        * column sum of the matrix
+        *
+        * @return norm one
+        */
+        double norm_one();
 
 };
+
+	/**
+	 * Allows printing the matrix by stream.
+	 *
+	 * @param os            Output stream.
+	 * @param matrix        Matrix to be printed.
+	 * */
+	template<typename TField>
+	std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix);
 
 }
 
