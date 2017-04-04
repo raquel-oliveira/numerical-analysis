@@ -201,6 +201,47 @@ class Matrix {
         Matrix<TField> transpose() const;
 
 
+         /**
+         * Method to get diagonal of a matrix and return it.
+         *
+         * @return Matrix<TField> Matrix diagonal.  
+         * */
+        Matrix<TField> diagonal() const;
+
+        /**
+         * Method to return the matrix simetric.
+         *
+         * @return Matrix<TField> Matrix simetric.  
+         * */
+        Matrix<TField> symmetric() const;
+
+        /**
+         * 
+         * Method to do exponentiation of the matrix and return it
+         *
+         * The base is the data of the matrix (matrix[i][j]).
+         *
+         * @param k exponent
+         * @return Matrix<TField> Matrix
+         * */
+        Matrix<TField> pow(int k) const;
+        
+        /**
+        * Method that gives tha maximum absolute
+        * row sum of the matrix
+        
+        * @return norm inifinty
+        */
+        double norm_infinity();
+
+        /**
+        * Method that gives tha maximum absolute 
+        * column sum of the matrix
+        *
+        * @return norm one
+        */
+        double norm_one();
+
 };
 
 	/**

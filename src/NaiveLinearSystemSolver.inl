@@ -1,4 +1,6 @@
 #include "NaiveLinearSystemSolver.h"
+#include <math.h>
+#include <stdbool.h>
 
 template<typename TField>
 void numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(const Matrix<TField> & source, 
@@ -65,4 +67,49 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_cholesky(cons
     }
 
     x = Linv.transpose() * Dinv * b;
+}
+
+template<typename TField>
+double numerical_analysis::NaiveLinearSystemSolver<TField>::norm_euclidean(Matrix<TField> m){
+    //TODO:: verify if c has only 1 col or change to general norm
+    double sum = 0;
+    for (int i = 0; i < m.rows; ++i) {
+        sum += std::pow(m[i][0], 2);
+    }
+    return sqrt(sum);
+}
+
+
+template<typename TField>
+void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix<TField> A,
+		Matrix<TField> b,
+		double c,
+		Matrix<TField> & x) {
+
+	if (c < 0 )
+		throw std::logic_error("Varepsilon can not be < 0");
+	
+	numerical_analysis::Matrix<TField> s_aux {A.rows, 1};
+	numerical_analysis::Matrix<TField> de {A.rows, 1};
+	numerical_analysis::Matrix<TField> s {A.rows, 1};
+
+	de = (A.pow(-1)).diagonal();
+	s_aux = A-A.diagonal();
+	
+	s = s_aux*de;
+	if (!(s.norm_infinity() < 1)) 
+		throw std::logic_error("Not indicated to use Jacobi method");
+	
+	numerical_analysis::Matrix<TField> aux {x.rows, x.cols};
+	numerical_analysis::Matrix<TField> n {x.rows, x.cols}; //to check correctness
+
+	s_aux = de.symmetric()*s_aux;
+
+	while (numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(n)> c) {
+		aux = x;
+		s = (s_aux*x) + (de*b);
+		x = s;
+
+		n = x-aux;
+	}
 }
