@@ -16,6 +16,8 @@ namespace numerical_analysis {
 	template <typename TField>
 	class MatrixDecomposer {
 
+		public:
+
 		/*!
 		 * Performs LU factorization with partial pivoting.
 		 * 

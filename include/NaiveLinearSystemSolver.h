@@ -3,6 +3,7 @@
 
 #include "Matrix.h"
 #include "LinearSystemSolver.h"
+#include <stdbool.h>
 
 namespace numerical_analysis {
 	/**
@@ -15,6 +16,12 @@ namespace numerical_analysis {
 	 * */
 	template<typename TField>
 	class NaiveLinearSystemSolver : public LinearSystemSolver<TField> {
+
+		private:
+			/**
+	        * @return the euclidean norm on a n-dimensional euclidean space R^n 
+	        */
+	        static double norm_euclidean(Matrix<TField> m);
 
 		public:
 
@@ -54,6 +61,19 @@ namespace numerical_analysis {
 								  Matrix<TField> b,
 								  Matrix<TField> &x);
 
+			
+			/**
+             * Solve a linear system by Jacobi.
+             *
+             * @param A             Matrix of coefficients.
+             * @param b             Vector.
+             * @param c             Number of approximation to correctness
+             * @param x             Solution of the linear system.
+             * */
+            static void solve_by_jacobi(Matrix<TField> A,
+                          Matrix<TField> b,
+                          double c,
+                          Matrix<TField> & x);
 	};
 
 };
