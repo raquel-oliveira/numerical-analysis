@@ -284,3 +284,31 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::pow(int k
     }
     return p;
 }
+
+template<typename TField>
+double numerical_analysis::Matrix<TField>::norm_infinity(){
+    double aux = 0;
+    double max = 0;
+    for (int i = 0; i < this->rows; i++){
+        for (int j = 0; j < this->cols; j++){
+            aux += std::abs(this->data[i][j]);
+        }
+        if (max < aux) max = aux;
+        aux = 0;
+    }
+    return max;
+}
+
+template<typename TField>
+double numerical_analysis::Matrix<TField>::norm_one(){
+    double aux = 0;
+    double max = 0;
+    for (int i = 0; i < this->cols; i++){
+        for (int j = 0; j < this->rows; j++){
+            aux += std::abs(this->data[i][j]);
+        }
+        if (max < aux) max = aux;
+        aux = 0;
+    }
+    return max;
+}

@@ -19,14 +19,9 @@ namespace numerical_analysis {
 
 		private:
 			/**
-			* @return the euclidean norm on a n-dimensional euclidean space R^n 
-			*/
-			static double get_norm(Matrix<TField> c);
-
-			/*
-			* @return if it's worth find the answer using Jacobi method
-			*/
-			static bool check_jacobi(Matrix<TField> m);
+	        * @return the euclidean norm on a n-dimensional euclidean space R^n 
+	        */
+	        static double norm_euclidean(Matrix<TField> m);
 
 		public:
 

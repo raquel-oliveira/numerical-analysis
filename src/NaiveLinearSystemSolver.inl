@@ -1,7 +1,6 @@
 #include "NaiveLinearSystemSolver.h"
 #include <math.h>
 #include <stdbool.h>
-#define JACOBI_MAX 1
 
 template<typename TField>
 void numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(const Matrix<TField> & source, 
@@ -70,31 +69,16 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_cholesky(cons
     x = Linv.transpose() * Dinv * b;
 }
 
-
 template<typename TField>
-double numerical_analysis::NaiveLinearSystemSolver<TField>::get_norm(Matrix<TField> c){
-	//TODO:: verify if c has only 1 col or change to general norm
-	double sum = 0;
-	for (int i = 0; i < c.rows; ++i) {
-        sum += std::pow(c[i][0], 2);
-   	}
-   	return sqrt(sum);
+double numerical_analysis::NaiveLinearSystemSolver<TField>::norm_euclidean(Matrix<TField> m){
+    //TODO:: verify if c has only 1 col or change to general norm
+    double sum = 0;
+    for (int i = 0; i < m.rows; ++i) {
+        sum += std::pow(m[i][0], 2);
+    }
+    return sqrt(sum);
 }
 
-template<typename TField>
-bool numerical_analysis::NaiveLinearSystemSolver<TField>::check_jacobi(Matrix<TField> m){
-	double aux = 0;
-	double max = 0;
-	for (int i = 0; i < m.cols; i++){
-		for (int j = 0; j < m.rows; j++){
-			aux += std::abs(m.at(i, j));
-		}
-		if (max < aux) max = aux;
-		aux = 0;
-	}
-	if (max < JACOBI_MAX) return true;
-	return false;
-}
 
 template<typename TField>
 void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix<TField> A,
@@ -107,21 +91,21 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix
 	
 	numerical_analysis::Matrix<TField> s_aux {A.rows, 1};
 	numerical_analysis::Matrix<TField> de {A.rows, 1};
+	numerical_analysis::Matrix<TField> s {A.rows, 1};
 
 	de = (A.pow(-1)).diagonal();
 	s_aux = A-A.diagonal();
 	
-	if (!numerical_analysis::NaiveLinearSystemSolver<double>::check_jacobi(s_aux*de)) 
-		//throw std::logic_error("Not indicated to use Jacobi method");
-		std::cout << "Not indicated to use Jacobi method";
+	s = s_aux*de;
+	if (!(s.norm_infinity() < 1)) 
+		throw std::logic_error("Not indicated to use Jacobi method");
 	
 	numerical_analysis::Matrix<TField> aux {x.rows, x.cols};
-	numerical_analysis::Matrix<TField> s {A.rows, 1};
 	numerical_analysis::Matrix<TField> n {x.rows, x.cols}; //to check correctness
 
 	s_aux = de.symmetric()*s_aux;
 
-	while (numerical_analysis::NaiveLinearSystemSolver<double>::get_norm(n) > c) {
+	while (numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(n)> c) {
 		aux = x;
 		s = (s_aux*x) + (de*b);
 		x = s;

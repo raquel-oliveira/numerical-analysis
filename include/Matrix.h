@@ -225,6 +225,22 @@ class Matrix {
          * @return Matrix<TField> Matrix
          * */
         Matrix<TField> pow(int k) const;
+        
+        /**
+        * Method that gives tha maximum absolute
+        * row sum of the matrix
+        
+        * @return norm inifinty
+        */
+        double norm_infinity();
+
+        /**
+        * Method that gives tha maximum absolute 
+        * column sum of the matrix
+        *
+        * @return norm one
+        */
+        double norm_one();
 
 };
 
