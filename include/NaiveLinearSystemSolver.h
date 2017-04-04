@@ -1,5 +1,5 @@
-#ifndef _METHODS_
-#define _METHODS_
+#ifndef _NAIVE_METHODS_
+#define _NAIVE_METHODS_
 
 #include "Matrix.h"
 #include "LinearSystemSolver.h"
@@ -76,7 +76,7 @@ namespace numerical_analysis {
                           Matrix<TField> & x);
 	};
 
-}
+};
 
 #include "../src/NaiveLinearSystemSolver.inl"
 

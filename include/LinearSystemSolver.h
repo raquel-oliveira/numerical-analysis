@@ -2,6 +2,7 @@
 #define _LSYSTEM_SOLVER
 
 #include "Matrix.h"
+#include "MatrixDecomposer.h"
 
 namespace numerical_analysis {
 
