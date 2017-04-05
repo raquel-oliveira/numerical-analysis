@@ -235,6 +235,13 @@ class Matrix {
         double norm_infinity();
 
         /**
+         * Method to check if a matrix is symmetric.
+         * 
+         * @return bool         Status if the matrix is symmetric.
+         * */
+        bool isSymmetric() const;
+
+        /**
         * Method that gives tha maximum absolute 
         * column sum of the matrix
         *
