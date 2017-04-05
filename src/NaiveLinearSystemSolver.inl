@@ -101,7 +101,7 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix
 	s_aux = de.symmetric()*s_aux;
 
 	long count = 0;
-	while (numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(n)> p) {
+	while (n.norm_infinity() > p) {
 		aux = x;
 		s = (s_aux*x) + (de*b);
 		x = s;
@@ -139,7 +139,6 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix
 			s[i][0] =  (-1*sum)/ A[i][i];
 		}
 		xe = s;
-		//n = numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(x-aux);
 		n = (xe-aux).norm_infinity();
 		count++;
 		if (n < p) {checkConvergence = false;}
