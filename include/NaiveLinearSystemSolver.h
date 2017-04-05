@@ -74,6 +74,19 @@ namespace numerical_analysis {
                           Matrix<TField> b,
                           double c,
                           Matrix<TField> & x);
+
+            /**
+             * 
+             *
+             * @param A             Matrix of coefficients.
+             * @param b             Vector.
+             * @param p             Number of approximation to correctness/precision
+             * @param x             Solution of the linear system.
+             * */
+            static void solve_by_seidel(Matrix<TField> A,
+                          Matrix<TField> b,
+                          double p,
+                          Matrix<TField> & x);
 	};
 
 };

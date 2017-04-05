@@ -109,3 +109,36 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix
 		n = x-aux;
 	}
 }
+
+template<typename TField>
+void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix<TField> A,
+		Matrix<TField> b,
+		double p,
+		Matrix<TField> & x) {
+
+	if (p < 0 ) throw std::logic_error("Varepsilon can not be < 0");
+
+	numerical_analysis::Matrix<double> s {x.rows, 1, 0};
+	numerical_analysis::Matrix<double> aux {x.rows, 1, 0};
+	double sum, n;
+	bool checkConvergence = true;
+
+	while (checkConvergence) {
+		aux = x;
+		for (int i = 0 ; i < x.rows ; i++){
+			sum = 0;
+			for (int j = 0; j < i; j++){
+				sum = sum + A[i][j] * s[j][0];
+			}
+			for (int j = i + 1; j < x.rows; j++) {
+				sum = sum + A[i][j] * x[j][0];
+			}
+			sum = sum - b[i][0];
+			s[i][0] =  (-1*sum)/ A[i][i];
+		}
+		x = s;
+		//n = numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(x-aux);
+		n = (x-aux).norm_infinity();
+		if (n < p) {checkConvergence = false;}
+	}
+}
