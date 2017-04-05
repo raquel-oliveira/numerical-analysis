@@ -1,1 +1,0 @@
-g++ jacobi.cpp -o "../../../bin/jacobi" -I "../../../include/" -std=c++11 -Wall

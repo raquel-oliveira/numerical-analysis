@@ -23,13 +23,17 @@ int main(void) {
     std::cout << A;
     std::cout << "b:" << std::endl; 
     std::cout << b;
-    std::cout << "correctness: " << e << std::endl;
+    std::cout << "correctness/Desired approximation: " << e << std::endl;
     std::cout << "start x:" << std::endl; 
     std::cout << x;
 
+    std::cout << "Answer by Jacobi:" << std::endl;
     numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(A, b, e, x);
+    std::cout << x;
 
-    std::cout << "Answer" << std::endl;
+    x = { {3}, {3}};
+    std::cout << "Answer by Seidel:" << std::endl;
+    numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(A, b, e, x);
     std::cout << x;
 
     return 0;
