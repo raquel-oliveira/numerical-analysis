@@ -109,6 +109,16 @@ class Matrix {
          * */
         void swap_lines(const int & i, const int & j);
 
+		/**
+		 * Swap lines of the matrix in a range of columns.
+		 * 
+         * @param i     One line.
+         * @param j     Another line.
+		 * @param c1	From column c1.
+		 * @param c2	To column c2.
+		 * */
+		void swap_lines(const int & i, const int & j, const int c1, const int c2);
+
         /**
         * Operator [] for accessing rows of a matrix. This
         * returns a reference.

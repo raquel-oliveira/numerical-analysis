@@ -52,7 +52,8 @@ namespace numerical_analysis {
 			 * */
 			static void solve_by_lu(const Matrix<TField> A,
 								  Matrix<TField> b,
-								  Matrix<TField> & x);
+								  Matrix<TField> & x,
+								  bool partial_piv = true);
 
 			/**
 			 * Solve a linear system by Cholesky decomposition.
