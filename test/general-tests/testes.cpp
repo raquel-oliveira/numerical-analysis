@@ -50,8 +50,13 @@ int main(int argn, char ** argc) {
         ss.clear();
     }
 
-    numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
-    numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
+    cout << "Matrix: " << endl;
+    cout << matrix << endl;
+
+    cout << b << endl;
+
+    numerical_analysis::LinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
+    numerical_analysis::LinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
     //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, x_jacobi);
     //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_gs(matrix, b, x_gs);
 
