@@ -11,6 +11,7 @@ using namespace std;
 
 int main(int argn, char ** argc) {
 
+    long iterations;
     string path,input;    
     int n;
     double value;
@@ -80,16 +81,18 @@ int main(int argn, char ** argc) {
 
     cout << "Solve by Jacobi: ";
     try {
-        numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, 0.00001, x_jacobi);
+        iterations = numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, 0.00001, x_jacobi);
         cout << x_jacobi;
+        cout << "Number of iterations " << iterations << endl;
     } catch (exception& e){
         cout << e.what();
     }
 
     cout << "Solve by Gauss: ";
     try {
-        numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(matrix, b, 0.000001, x_gs);
+        iterations = numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(matrix, b, 0.000001, x_gs);
         cout << x_gs;
+        cout << "Number of iterations " << iterations << endl;
     } catch (exception& e){
         cout << e.what();
     }
