@@ -1,6 +1,7 @@
 #include "NaiveLinearSystemSolver.h"
 #include "LinearSystemSolver.h"
 #include "Matrix.h"
+#include <chrono>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -50,15 +51,21 @@ int main(int argn, char ** argc) {
         ss.clear();
     }
 
-    cout << "Matrix: " << endl;
-    cout << matrix << endl;
-
-    cout << b << endl;
-
+    auto start = std::chrono::system_clock::now();
     numerical_analysis::LinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
+    auto end = std::chrono::system_clock::now();
+    auto elapsedLU = end - start;
+    std::cout << "TIME LU: " << elapsedLU.count() << '\n';
+    
+    start = std::chrono::system_clock::now();
     numerical_analysis::LinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
-    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, x_jacobi);
-    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_gs(matrix, b, x_gs);
+    end = std::chrono::system_clock::now();
+    auto elapsedCholesky = end - start;
+    std::cout << "TIME CHOLESKY: " << elapsedCholesky.count() << '\n';        
+
+    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
+    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, 0.1, x_jacobi);
+    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(matrix, b, 0.1, x_gs);
 
     cout <<"A: " << endl;
     cout << matrix;
