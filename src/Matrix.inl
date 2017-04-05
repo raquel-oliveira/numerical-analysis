@@ -178,7 +178,7 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator*
     // Multiply
     Matrix<TField> prod {rows, _rhs.cols, 0};
     for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
+        for (int j = 0; j < _rhs.cols; ++j) {
             for (int k = 0; k < cols; ++k) {
                 prod[i][j] = prod[i][j] + this->data[i][k] * _rhs[k][j]; 
             }   
@@ -190,9 +190,11 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator*
 template<typename TField>
 numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operator=(Matrix<TField> m) {
     if (m.cols != this->cols || m.rows != this->rows) {
-        for (int i = 0; i < this->rows; ++i)
-            delete [] this->data[i];
-        delete [] this->data;
+		if (data != nullptr) {
+			for (int i = 0; i < this->rows; ++i)
+				delete [] this->data[i];
+			delete [] this->data;
+		}
         this->data = new TField * [m.rows]; 
         for (int i = 0; i < m.rows; ++i)
             this->data[i] = new TField[m.cols];

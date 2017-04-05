@@ -1,0 +1,1 @@
+g++ iterative.cpp -o "../../../bin/iterative" -I "../../../include/" -std=c++11 -Wall
