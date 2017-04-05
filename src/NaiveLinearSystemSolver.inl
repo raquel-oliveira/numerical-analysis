@@ -76,7 +76,7 @@ double numerical_analysis::NaiveLinearSystemSolver<TField>::norm_euclidean(Matri
 
 
 template<typename TField>
-void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix<TField> A,
+long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix<TField> A,
 		Matrix<TField> b,
 		double p,
 		Matrix<TField> & x) {
@@ -100,17 +100,20 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix
 
 	s_aux = de.symmetric()*s_aux;
 
+	long count = 0;
 	while (numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(n)> p) {
 		aux = x;
 		s = (s_aux*x) + (de*b);
 		x = s;
 
 		n = x-aux;
+		count++;
 	}
+	return count;
 }
 
 template<typename TField>
-void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix<TField> A,
+long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix<TField> A,
 		Matrix<TField> b,
 		double p,
 		Matrix<TField> & xe) {
@@ -120,6 +123,7 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix
 	numerical_analysis::Matrix<double> s {xe.rows, 1, 0};
 	numerical_analysis::Matrix<double> aux {xe.rows, 1, 0};
 	double sum, n;
+	long count = 0;
 	bool checkConvergence = true;
 	while (checkConvergence) {
 		aux = xe;
@@ -137,6 +141,8 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix
 		xe = s;
 		//n = numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(x-aux);
 		n = (xe-aux).norm_infinity();
+		count++;
 		if (n < p) {checkConvergence = false;}
 	}
+	return count;
 }
