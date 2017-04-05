@@ -21,7 +21,7 @@ int main(void) {
     numerical_analysis::Matrix<double> x {1, b.rows, 0};
     //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_lu(A, b, x);
 
-	numerical_analysis::LinearSystemSolver<double>::solve_by_lu(A, b, x);
+	numerical_analysis::LinearSystemSolver<double>::solve_by_lu(A, b, x, false);
 
     std::cout << x;
 

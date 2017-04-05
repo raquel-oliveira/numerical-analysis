@@ -34,7 +34,8 @@ namespace numerical_analysis {
 		static void lu (const Matrix<TField> & source, 
 				Matrix<TField> & L,
 				Matrix<TField> & U,
-				Matrix<TField> & P);
+				Matrix<TField> & P,
+				bool partial_piv = true);
 
 		/*!
 		 * Performs LDLt factorization.
