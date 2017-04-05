@@ -33,7 +33,8 @@ namespace numerical_analysis {
 		 * */
 		static void lu (const Matrix<TField> & source, 
 				Matrix<TField> & L,
-				Matrix<TField> & U);
+				Matrix<TField> & U,
+				Matrix<TField> & P);
 
 		/*!
 		 * Performs LDLt factorization.

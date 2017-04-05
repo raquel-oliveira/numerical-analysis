@@ -34,7 +34,16 @@ template<typename TField>
 void numerical_analysis::LinearSystemSolver<TField>::solve_by_lu(const Matrix<TField> A,
 					  Matrix<TField> b,
 					  Matrix<TField> & x) {
-
+	numerical_analysis::Matrix<TField> L {A.rows};
+	numerical_analysis::Matrix<TField> U {A};
+	numerical_analysis::Matrix<TField> P {A.rows};
+	numerical_analysis::Matrix<TField> y {A.rows, 1, 0.0};
+	numerical_analysis::MatrixDecomposer<TField>::lu(A, L, U, P);
+	std::cout << L << std::endl;
+	std::cout << U << std::endl;
+	std::cout << P << std::endl;
+	numerical_analysis::LinearSystemSolver<TField>::forward_substitution(L, P*b, y);
+	numerical_analysis::LinearSystemSolver<TField>::back_substitution(U, y, x);
 }
 
 

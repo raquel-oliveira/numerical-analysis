@@ -99,6 +99,13 @@ void numerical_analysis::Matrix<TField>::swap_lines(const int & i, const int & j
 }
 
 template<typename TField>
+void numerical_analysis::Matrix<TField>::swap_lines(const int & i, const int & j, const int c1, const int c2) {
+    for (int c = c1; c <= c2; ++c) {
+        std::swap(data[i][c], data[j][c]);
+    }
+}
+
+template<typename TField>
 TField * & numerical_analysis::Matrix<TField>::operator[](const int & i) {
     if (i < 0 || i >= rows)
             throw std::logic_error("Accessing position out of bounds.");
