@@ -19,7 +19,7 @@ int main(int argn, char ** argc){
 	
 	for(int i = 0; i < n; ++i){
 		for(int j = 0; j < n; ++j){
-			i == j ? randomico = rand() % 100 + 50 : randomico = rand() % 10 + 1;
+			i == j ? randomico = rand() % 10 + 1 : randomico = rand() % 5;
 			M[i][j] = M[j][i] = randomico;
 		}
 	}

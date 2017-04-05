@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <exception>
 
 using namespace std;
 
@@ -30,8 +31,8 @@ int main(int argn, char ** argc) {
     numerical_analysis::Matrix<double> b{n,1,0};
     numerical_analysis::Matrix<double> x_lu {1, n, 0};
     numerical_analysis::Matrix<double> x_cholesky {1, n, 0};
-    numerical_analysis::Matrix<double> x_jacobi {1, n, 0};
-    numerical_analysis::Matrix<double> x_gs {1, n, 0};
+    numerical_analysis::Matrix<double> x_jacobi {n, 1, 0};
+    numerical_analysis::Matrix<double> x_gs {n, 1, 0};
 
     int line = 0;
     int col = 0;
@@ -51,33 +52,47 @@ int main(int argn, char ** argc) {
         ss.clear();
     }
 
-    auto start = std::chrono::system_clock::now();
-    numerical_analysis::LinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
-    auto end = std::chrono::system_clock::now();
-    auto elapsedLU = end - start;
-    std::cout << "TIME LU: " << elapsedLU.count() << '\n';
+    //cout << "Solve by lu: \n";
+    try {
+        auto start = std::chrono::steady_clock::now();
+        numerical_analysis::LinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::milli> elapsedLU = (end - start);
+        std::cout << "& " << elapsedLU.count() << '\n';
+        //cout << x_lu;
+    } catch (exception& e){
+        cout << e.what();
+    }
     
-    start = std::chrono::system_clock::now();
-    numerical_analysis::LinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
-    end = std::chrono::system_clock::now();
-    auto elapsedCholesky = end - start;
-    std::cout << "TIME CHOLESKY: " << elapsedCholesky.count() << '\n';        
+    //cout << "Solve by Cholesky: \n";        
+    try {
+        auto start = std::chrono::steady_clock::now();
+        numerical_analysis::LinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::milli> elapsedCholesky = (end - start);
+        std::cout << "& " << elapsedCholesky.count() << '\n';
+        //cout << x_cholesky;
+    } catch (exception& e){
+        cout << e.what();
+    }
 
-    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
-    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, 0.1, x_jacobi);
-    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(matrix, b, 0.1, x_gs);
 
-    cout <<"A: " << endl;
-    cout << matrix;
+    /*cout << "Solve by Jacobi: ";
+    try {
+        numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, 0.001, x_jacobi);
+        cout << x_jacobi;
+    } catch (exception& e){
+        cout << e.what();
+    }
 
-    cout << "b: " << endl;
-    cout << b; 
-
-    cout << "Solve by lu: ";
-    cout << x_lu;
-
-    cout << "Solve by cholesky: ";
-    cout << x_cholesky;
+    cout << "Solve by Gauss: ";
+    try {
+        numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(matrix, b, 0.001, x_gs);
+        cout << x_gs;
+    } catch (exception& e){
+        cout << e.what();
+    }*/
+    
 
     return 0;
 }

@@ -67,7 +67,6 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_cholesky(cons
 
 template<typename TField>
 double numerical_analysis::NaiveLinearSystemSolver<TField>::norm_euclidean(Matrix<TField> m){
-    //TODO:: verify if c has only 1 col or change to general norm
     double sum = 0;
     for (int i = 0; i < m.rows; ++i) {
         sum += std::pow(m[i][0], 2);
@@ -79,10 +78,10 @@ double numerical_analysis::NaiveLinearSystemSolver<TField>::norm_euclidean(Matri
 template<typename TField>
 void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix<TField> A,
 		Matrix<TField> b,
-		double c,
+		double p,
 		Matrix<TField> & x) {
 
-	if (c < 0 )
+	if (p < 0 )
 		throw std::logic_error("Varepsilon can not be < 0");
 	
 	numerical_analysis::Matrix<TField> s_aux {A.rows, 1};
@@ -94,14 +93,14 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix
 	
 	s = s_aux*de;
 	if (!(s.norm_infinity() < 1)) 
-		throw std::logic_error("Not indicated to use Jacobi method");
+		throw std::logic_error("Not indicated to use Jacobi method\n");
 	
 	numerical_analysis::Matrix<TField> aux {x.rows, x.cols};
 	numerical_analysis::Matrix<TField> n {x.rows, x.cols}; //to check correctness
 
 	s_aux = de.symmetric()*s_aux;
 
-	while (numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(n)> c) {
+	while (numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(n)> p) {
 		aux = x;
 		s = (s_aux*x) + (de*b);
 		x = s;
@@ -114,31 +113,30 @@ template<typename TField>
 void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix<TField> A,
 		Matrix<TField> b,
 		double p,
-		Matrix<TField> & x) {
+		Matrix<TField> & xe) {
 
-	if (p < 0 ) throw std::logic_error("Varepsilon can not be < 0");
+	if (p < 0 ) throw std::logic_error("Varepsilon can not be < 0\n");
 
-	numerical_analysis::Matrix<double> s {x.rows, 1, 0};
-	numerical_analysis::Matrix<double> aux {x.rows, 1, 0};
+	numerical_analysis::Matrix<double> s {xe.rows, 1, 0};
+	numerical_analysis::Matrix<double> aux {xe.rows, 1, 0};
 	double sum, n;
 	bool checkConvergence = true;
-
 	while (checkConvergence) {
-		aux = x;
-		for (int i = 0 ; i < x.rows ; i++){
+		aux = xe;
+		for (int i = 0 ; i < xe.rows ; i++){
 			sum = 0;
 			for (int j = 0; j < i; j++){
 				sum = sum + A[i][j] * s[j][0];
 			}
-			for (int j = i + 1; j < x.rows; j++) {
-				sum = sum + A[i][j] * x[j][0];
+			for (int j = i + 1; j < xe.rows; j++) {
+				sum = sum + A[i][j] * xe[j][0];
 			}
 			sum = sum - b[i][0];
 			s[i][0] =  (-1*sum)/ A[i][i];
 		}
-		x = s;
+		xe = s;
 		//n = numerical_analysis::NaiveLinearSystemSolver<double>::norm_euclidean(x-aux);
-		n = (x-aux).norm_infinity();
+		n = (xe-aux).norm_infinity();
 		if (n < p) {checkConvergence = false;}
 	}
 }
