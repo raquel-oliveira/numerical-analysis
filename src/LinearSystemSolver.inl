@@ -56,7 +56,7 @@ void numerical_analysis::LinearSystemSolver<TField>::solve_by_cholesky(const Mat
 	
 	numerical_analysis::Matrix<TField> L {A.rows};	
 	numerical_analysis::MatrixDecomposer<TField>::cholesky(A, L);
-	numerical_analysis::Matrix<TField> y {1, A.rows, 0};
+	numerical_analysis::Matrix<TField> y {A.rows, 1, 0};
 	numerical_analysis::LinearSystemSolver<TField>::forward_substitution(L, b, y);
 	numerical_analysis::LinearSystemSolver<TField>::back_substitution(L.transpose(), y, x);
 }
