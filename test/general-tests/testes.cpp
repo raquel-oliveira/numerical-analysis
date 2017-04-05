@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <exception>
 
 using namespace std;
 
@@ -29,8 +30,8 @@ int main(int argn, char ** argc) {
     numerical_analysis::Matrix<double> b{n,1,0};
     numerical_analysis::Matrix<double> x_lu {1, n, 0};
     numerical_analysis::Matrix<double> x_cholesky {1, n, 0};
-    numerical_analysis::Matrix<double> x_jacobi {1, n, 0};
-    numerical_analysis::Matrix<double> x_gs {1, n, 0};
+    numerical_analysis::Matrix<double> x_jacobi {n, 1, 0};
+    numerical_analysis::Matrix<double> x_gs {n, 1, 0};
 
     int line = 0;
     int col = 0;
@@ -55,22 +56,44 @@ int main(int argn, char ** argc) {
 
     cout << b << endl;
 
-    numerical_analysis::LinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
-    numerical_analysis::LinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
-    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, x_jacobi);
-    //numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_gs(matrix, b, x_gs);
-
     cout <<"A: " << endl;
     cout << matrix;
 
     cout << "b: " << endl;
     cout << b; 
+    try {
+        numerical_analysis::LinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
+        cout << "Solve by lu: ";
+        cout << x_lu;
+    } catch (exception& e){
+        cout << e.what();
+    }
+    
+    try {
+        numerical_analysis::LinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
+        cout << "Solve by Cholesky: ";
+        cout << x_cholesky;
+    } catch (exception& e){
+        cout << e.what();
+    }
 
-    cout << "Solve by lu: ";
-    cout << x_lu;
 
-    cout << "Solve by cholesky: ";
-    cout << x_cholesky;
+    cout << "Solve by Jacobi: ";
+    try {
+        numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, 0.00001, x_jacobi);
+        cout << x_jacobi;
+    } catch (exception& e){
+        cout << e.what();
+    }
+
+    cout << "Solve by Gauss: ";
+    try {
+        numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(matrix, b, 0.000001, x_gs);
+        cout << x_gs;
+    } catch (exception& e){
+        cout << e.what();
+    }
+    
 
     return 0;
 }
