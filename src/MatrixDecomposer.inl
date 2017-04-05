@@ -46,12 +46,12 @@ void numerical_analysis::MatrixDecomposer<TField>::cholesky (const Matrix<TField
 		L[j][0] = source[j][0]/L[0][0];
 
 	for (int i = 1; i < source.rows - 1; ++i) {
-		double sum = 0.0;
+		TField sum = 0.0;
 		for (int k = 0; k < i; ++k)
 			sum += (L[i][k] * L[i][k]);
 		L[i][i] = std::sqrt(source[i][i] - sum);
 		for (int j = i + 1; j < source.rows; ++j) {
-			double sum = 0.0;
+			TField sum = 0.0;
 			for (int k = 0; k < i; ++k) {
 				sum += L[j][k]*L[i][k];
 			}
@@ -59,7 +59,7 @@ void numerical_analysis::MatrixDecomposer<TField>::cholesky (const Matrix<TField
 		}
 	}
 
-	double sum = 0.0;
+	TField sum = 0.0;
 	for (int k = 0; k < source.rows - 1; ++k) {
 		sum += (L[source.rows - 1][k]*L[source.rows - 1][k]);
 	}
