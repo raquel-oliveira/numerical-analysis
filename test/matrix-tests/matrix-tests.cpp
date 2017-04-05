@@ -38,6 +38,10 @@ int main(void) {
     numerical_analysis::Matrix<double> m9 {5};
     std::cout << m9;
 
+    numerical_analysis::Matrix<double> m10 {{1,2,3},{4,5,6},{7,8,9}};
+    std::cout << m10;
+    std::cout << m10.isSymmetric() << std::endl;
+
     // Testing [] operator
 	std::cout << m9[1][0] << std::endl;
 	m9[4][0] = 4;

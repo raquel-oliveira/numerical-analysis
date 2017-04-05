@@ -2,6 +2,7 @@
 #define _MATRIX_FACTORIZATION_
 
 #include "Matrix.h"
+#include <cmath>
 
 namespace numerical_analysis {
 
@@ -14,6 +15,8 @@ namespace numerical_analysis {
 	 * */
 	template <typename TField>
 	class MatrixDecomposer {
+
+		public:
 
 		/*!
 		 * Performs LU factorization with partial pivoting.
@@ -30,7 +33,9 @@ namespace numerical_analysis {
 		 * */
 		static void lu (const Matrix<TField> & source, 
 				Matrix<TField> & L,
-				Matrix<TField> & U);
+				Matrix<TField> & U,
+				Matrix<TField> & P,
+				bool partial_piv = true);
 
 		/*!
 		 * Performs LDLt factorization.
@@ -56,7 +61,7 @@ namespace numerical_analysis {
 		 * @param L				Lower triangular matrix such that source = L*Lt.
 		 * */
 		static void cholesky (const Matrix<TField> & source,
-				Matrix<TField> L);
+				Matrix<TField> & L);
 	};
 
 };

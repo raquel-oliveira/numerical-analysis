@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
@@ -93,6 +94,13 @@ const TField & numerical_analysis::Matrix<TField>::at(const int & i, const int &
 template<typename TField>
 void numerical_analysis::Matrix<TField>::swap_lines(const int & i, const int & j) {
     for (int c = 0; c < this->cols; ++c) {
+        std::swap(data[i][c], data[j][c]);
+    }
+}
+
+template<typename TField>
+void numerical_analysis::Matrix<TField>::swap_lines(const int & i, const int & j, const int c1, const int c2) {
+    for (int c = c1; c <= c2; ++c) {
         std::swap(data[i][c], data[j][c]);
     }
 }
@@ -239,4 +247,91 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose
     }
 
     return transposed;
+}
+
+template<typename TField>
+bool numerical_analysis::Matrix<TField>::isSymmetric() const{
+    if(this->rows != this->cols) {
+        return false;
+    }else{
+        for(int i = 0; i < this->rows; ++i){
+            for(int j = i+1; j < this->cols; ++j){
+                if(this->data[i][j] != this->data[j][i]) 
+                    return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::diagonal() const{
+
+    numerical_analysis::Matrix<TField> d {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+            if (i == j){
+                d[i][j] = this->data[i][j];
+            }
+        }
+    }
+
+    return d;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::symmetric() const{
+
+    numerical_analysis::Matrix<TField> s {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+                if (this->data[i][j] == 0){
+                    s[i][j] = 0; // for some reason -1*0 = -0
+                } else {
+                    s[i][j] = -1*this->data[i][j];
+                }
+        }
+    }
+    return s;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::pow(int k) const{
+
+    numerical_analysis::Matrix<TField> p {this->cols, this->rows, 0};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+                p[i][j] = std::pow(this->data[i][j], k);
+        }
+    }
+    return p;
+}
+
+template<typename TField>
+double numerical_analysis::Matrix<TField>::norm_infinity(){
+    double aux = 0;
+    double max = 0;
+    for (int i = 0; i < this->rows; i++){
+        for (int j = 0; j < this->cols; j++){
+            aux += std::abs(this->data[i][j]);
+        }
+        if (max < aux) max = aux;
+        aux = 0;
+    }
+    return max;
+}
+
+template<typename TField>
+double numerical_analysis::Matrix<TField>::norm_one(){
+    double aux = 0;
+    double max = 0;
+    for (int i = 0; i < this->cols; i++){
+        for (int j = 0; j < this->rows; j++){
+            aux += std::abs(this->data[i][j]);
+        }
+        if (max < aux) max = aux;
+        aux = 0;
+    }
+    return max;
 }
