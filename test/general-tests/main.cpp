@@ -15,7 +15,7 @@ int main(int argn, char ** argc) {
 
 	string path,input;    
     int n;
-    double value;
+    double value = 0, e = 0;
     stringstream ss;
 
     int v = 0;
@@ -24,7 +24,11 @@ int main(int argn, char ** argc) {
     }
 
     if(argn > 2){
-    	value = stoi(argc[2]);
+    	value = stod(argc[2]);
+    }
+
+    if(argn > 3){
+    	e = stod(argc[3]);
     }
 
     ifstream matrix_txt;
@@ -58,10 +62,19 @@ int main(int argn, char ** argc) {
         ss.clear();
     }
 
+    cout << "Matriz A: \n" << matrix;
+
+    cout << "Matriz b: \n" << b;
+
+    cout << "Vetor de entrada: \n" << x_jacobi;
+    cout << "Epsilon: " << e << endl;
+
+    cout << "\n---------- Solutions ----------\n\n";
+
     cout << "Solve by lu: ";
     try {
         auto start = std::chrono::steady_clock::now();
-        numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
+        numerical_analysis::LinearSystemSolver<double>::solve_by_lu(matrix, b, x_lu);
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double, std::milli> elapsedLU = (end - start);
         cout << x_lu.transpose();
@@ -74,7 +87,7 @@ int main(int argn, char ** argc) {
     cout << "Solve by Cholesky: ";        
     try {
         auto start = std::chrono::steady_clock::now();
-        numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
+        numerical_analysis::LinearSystemSolver<double>::solve_by_cholesky(matrix, b, x_cholesky);
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double, std::milli> elapsedCholesky = (end - start);
         cout << x_cholesky.transpose();
@@ -88,7 +101,7 @@ int main(int argn, char ** argc) {
     cout << "Solve by Jacobi: ";
     try {
         auto start = std::chrono::steady_clock::now();
-        int ite = numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, 0.01, x_jacobi);
+        int ite = numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_jacobi(matrix, b, e, x_jacobi);
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double, std::milli> elapsedJacobi = (end - start);
         std::cout << x_jacobi.transpose();
@@ -102,7 +115,7 @@ int main(int argn, char ** argc) {
     cout << "Solve by Gauss: ";
     try {
         auto start = std::chrono::steady_clock::now();
-        int ite = numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(matrix, b, 0.1, x_gs);
+        int ite = numerical_analysis::NaiveLinearSystemSolver<double>::solve_by_seidel(matrix, b, e, x_gs);
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double, std::milli> elapsedSeidel = (end - start);
         std::cout << x_gs.transpose();
