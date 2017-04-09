@@ -67,26 +67,32 @@ namespace numerical_analysis {
              *
              * @param A             Matrix of coefficients.
              * @param b             Vector.
-             * @param c             Number of approximation to correctness
+             * @param p             Number of precision
              * @param x             Solution of the linear system.
+
+             * @return              number of iterations
              * */
-            static void solve_by_jacobi(Matrix<TField> A,
+            static long solve_by_jacobi(Matrix<TField> A,
                           Matrix<TField> b,
-                          double c,
+                          double p,
                           Matrix<TField> & x);
 
             /**
              * 
+             * Solve a linear system by Gauss-Seidel.
+             * Solution update in @param x.
              *
              * @param A             Matrix of coefficients.
              * @param b             Vector.
-             * @param p             Number of approximation to correctness/precision
-             * @param x             Solution of the linear system.
+             * @param p             Number of precision
+             * @param x             Initial guess of solution of the linear system
+             * 
+             * @return              number of iterations
              * */
-            static void solve_by_seidel(Matrix<TField> A,
+            static long solve_by_seidel(Matrix<TField> A,
                           Matrix<TField> b,
                           double p,
-                          Matrix<TField> & x);
+                          Matrix<TField> & xe);
 	};
 
 };
