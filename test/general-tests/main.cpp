@@ -18,7 +18,6 @@ int main(int argn, char ** argc) {
     double value = 0, e = 0;
     stringstream ss;
 
-    int v = 0;
     if(argn > 1){
         path = argc[1];
     }
