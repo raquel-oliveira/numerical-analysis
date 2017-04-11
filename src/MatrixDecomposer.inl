@@ -26,6 +26,9 @@ void numerical_analysis::MatrixDecomposer<TField>::lu (const Matrix<TField> & so
 				U[j][m] = U[j][m] - L[j][i]*U[i][m];
 			}	
 		}
+		std::cout << "L("<<i<<"): \n" << L << std::endl;
+		std::cout << "U("<<i<<"): \n" << U << std::endl;
+		std::cout << "P("<<i<<"): \n" << P << std::endl;
 	}
 }
 
@@ -41,9 +44,12 @@ void numerical_analysis::MatrixDecomposer<TField>::cholesky (const Matrix<TField
 		Matrix<TField> & L) {
 
 	L[0][0] = std::sqrt(source[0][0]);
-	
+
 	for (int j = 1; j < source.rows; ++j) 
 		L[j][0] = source[j][0]/L[0][0];
+
+	std::cout << "L(0): " << std::endl;
+	std::cout << L << std::endl;
 
 	for (int i = 1; i < source.rows - 1; ++i) {
 		TField sum = 0.0;
@@ -57,6 +63,9 @@ void numerical_analysis::MatrixDecomposer<TField>::cholesky (const Matrix<TField
 			}
 			L[j][i] = (source[j][i] - sum) / L[i][i];
 		}
+
+		std::cout << "L("<<i<<"): " << std::endl;
+		std::cout << L << std::endl;
 	}
 
 	TField sum = 0.0;
@@ -64,4 +73,7 @@ void numerical_analysis::MatrixDecomposer<TField>::cholesky (const Matrix<TField
 		sum += (L[source.rows - 1][k]*L[source.rows - 1][k]);
 	}
 	L[source.rows-1][source.rows-1] = std::sqrt(source[source.rows-1][source.rows-1] - sum);
+
+	std::cout << "L("<<source.rows-1<<"): " << std::endl;
+	std::cout << L << std::endl;
 }

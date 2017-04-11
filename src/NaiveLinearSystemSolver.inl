@@ -101,13 +101,19 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix
 	s_aux = de.symmetric()*s_aux;
 
 	long count = 0;
+	std::cout << "Iteration("<<count<<"): \n";
+	std::cout << x << std::endl;
+
 	while (n.norm_infinity() > p) {
 		aux = x;
 		s = (s_aux*x) + (de*b);
 		x = s;
 
-		n = x-aux;
 		count++;
+		
+		std::cout << "Iteration("<<count<<"): \n";
+		std::cout << x << std::endl;
+		n = x-aux;
 	}
 	return count;
 }
@@ -125,6 +131,10 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix
 	double sum, n;
 	long count = 0;
 	bool checkConvergence = true;
+
+	std::cout << "Iteration("<<count<<"): \n";
+	std::cout << xe << std::endl;
+
 	while (checkConvergence) {
 		aux = xe;
 		for (int i = 0 ; i < xe.rows ; i++){
@@ -141,6 +151,10 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix
 		xe = s;
 		n = (xe-aux).norm_infinity();
 		count++;
+
+		std::cout << "Iteration("<<count<<"): \n";
+		std::cout << xe << std::endl;
+
 		if (n < p) {checkConvergence = false;}
 	}
 	return count;
