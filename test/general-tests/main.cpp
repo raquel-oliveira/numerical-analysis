@@ -113,7 +113,7 @@ int main(int argn, char ** argc) {
         } catch (exception& e){
             cout << e.what();
         }
-    }else{
+    }else if(alg[0] == 'g'){
         cout << "Vetor de entrada: \n" << x_jacobi;
         cout << "Epsilon: " << e << endl;
         cout << "\n---------- Solve by Gauss ----------\n\n";
@@ -129,6 +129,12 @@ int main(int argn, char ** argc) {
         } catch (exception& e){
             cout << e.what();
         }  
+    }else{
+        cout << "Choose a available option to test:" << endl;
+        cout << "l : Solve by Lu" << endl;
+        cout << "c : Solve by Cholesky" << endl;
+        cout << "j : Solve by Jacobi" << endl;
+        cout << "g : Solve by Gauss Seidel" << endl;
     }
     
 }
