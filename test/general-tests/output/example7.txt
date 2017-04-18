@@ -1,2 +1,2 @@
 http://www.maa.org/press/periodicals/loci/joma/iterative-methods-for-solving-iaxi-ibi-gauss-seidel-method
-x = (0.750, 1.750, − 1.000)
+x = (1, 2, − 1)
