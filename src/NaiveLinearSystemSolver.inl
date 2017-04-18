@@ -134,7 +134,11 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix
 
 	std::cout << "Iteration("<<count<<"): \n";
 	std::cout << xe << std::endl;
-
+	if (A.rowCriteria()){
+		std::cout << "The system converges by the row criteria" << std::endl;
+	} else{
+		throw std::logic_error("The system won't converge by the row criteria\n");
+	}
 	while (checkConvergence) {
 		aux = xe;
 		for (int i = 0 ; i < xe.rows ; i++){
@@ -155,7 +159,7 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_seidel(Matrix
 		std::cout << "Iteration("<<count<<"): \n";
 		std::cout << xe << std::endl;
 
-		if (n < p) {checkConvergence = false;}
+		if (n < p) { checkConvergence = false; }
 	}
 	return count;
 }

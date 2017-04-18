@@ -337,3 +337,20 @@ double numerical_analysis::Matrix<TField>::norm_one(){
     }
     return max;
 }
+
+template<typename TField>
+bool numerical_analysis::Matrix<TField>::rowCriteria(){
+    double sum = 0;
+    for (int i = 0; i < this->rows; i++){
+        for (int j = 0; j < this->cols; j++){
+            if (i != j){
+                sum += std::abs(this->data[i][j]);
+            }
+        }
+        if (std::abs(this->data[i][i]) < sum){
+            return false;
+        }
+        sum = 0;
+    }
+    return true;
+}

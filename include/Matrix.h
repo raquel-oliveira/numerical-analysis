@@ -259,6 +259,16 @@ class Matrix {
         */
         double norm_one();
 
+        /**
+        * Method to check if Criterion of the lines
+        *
+        * @return true if the absolute value of the diagonal term on line i
+         is greater than the sum of the absolute values of all other terms 
+         in the same line
+         @return false otherwise
+        */
+        bool rowCriteria();
+
 };
 
 	/**
