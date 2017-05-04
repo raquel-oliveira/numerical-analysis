@@ -1,6 +1,9 @@
 #ifndef _ZEROES_FINDER_
 #define _ZEROES_FINDER_
 
+#include <functional>
+#include <vector>
+
 namespace numerical_analysis {
 
 	/*!
@@ -42,7 +45,7 @@ namespace numerical_analysis {
 			 * @param f				The function.
 			 * @param interval		Interval of the domain to be restricted.
 			 * */
-			static void signal_change_restriction(std::function<TField (const & TField)> f,
+			static void signal_change_restriction(std::function<TField (const TField &)> f,
 					std::pair<TField, TField> & interval);
 			
 			/*!
@@ -55,7 +58,7 @@ namespace numerical_analysis {
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root found.
 			 * */
-			static void bisection(std::function<TField (const & TField)> f,
+			static void bisection(std::function<TField (const TField &)> f,
 					const std::pair<TField, TField> & interval, 
 					int criteria, const double & error,
 					TField & root); 
@@ -70,7 +73,7 @@ namespace numerical_analysis {
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root found.
 			 * */
-			static void secant(std::function<TField (const & TField)> f,
+			static void secant(std::function<TField (const TField &)> f,
 					const std::pair<TField, TField> & interval, 
 					int criteria, const double & error,
 					TField & root); 
@@ -86,8 +89,8 @@ namespace numerical_analysis {
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root found.
 			 * */
-			static void newton(std::function<TField (const & TField)> f,
-					std::function<TField (const & TField)> df,
+			static void newton(std::function<TField (const TField & )> f,
+					std::function<TField (const TField &)> df,
 					const std::pair<TField, TField> & interval, 
 					int criteria, const double & error,
 					TField & root); 
@@ -103,8 +106,8 @@ namespace numerical_analysis {
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root found.
 			 * */
-			static void fixed_point(std::function<TField (const & TField)> g,
-					std::function<TField (const & TField)> dg,
+			static void fixed_point(std::function<TField (const TField &)> g,
+					std::function<TField (const TField &)> dg,
 					const std::pair<TField, TField> & interval, 
 					int criteria, const double & error,
 					TField & root); 
@@ -113,4 +116,5 @@ namespace numerical_analysis {
 
 };
 
+#include "../src/FunctionZeroesFinder.inl"
 #endif
