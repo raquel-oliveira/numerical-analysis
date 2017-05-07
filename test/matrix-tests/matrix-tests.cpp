@@ -6,7 +6,7 @@ int main(void) {
     numerical_analysis::Matrix<double> m1 {6, 6, 1.0}; 
     std::cout << m1; 
 
-    numerical_analysis::Matrix<double> m2 {6, 1.0};
+    numerical_analysis::Matrix<double> m2 {6, 6, 1.0};
     std::cout << m2;
 
     numerical_analysis::Matrix<double> m3 = m1 * m2;
@@ -35,7 +35,7 @@ int main(void) {
 
     std::cout << m7;
 
-    numerical_analysis::Matrix<double> m9 {5};
+    numerical_analysis::Matrix<double> m9 {5, 1, 0};
     std::cout << m9;
 
     numerical_analysis::Matrix<double> m10 {{1,2,3},{4,5,6},{7,8,9}};

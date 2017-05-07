@@ -35,9 +35,9 @@ void numerical_analysis::LinearSystemSolver<TField>::solve_by_lu(const Matrix<TF
 					  Matrix<TField> b,
 					  Matrix<TField> & x,
 					  bool partial_piv) {
-	numerical_analysis::Matrix<TField> L {A.rows};
+	numerical_analysis::Matrix<TField> L {A.rows, A.rows, 1, 0};
 	numerical_analysis::Matrix<TField> U {A};
-	numerical_analysis::Matrix<TField> P {A.rows};
+	numerical_analysis::Matrix<TField> P {A.rows, A.rows, 1, 0};
 	numerical_analysis::Matrix<TField> y {A.rows, 1, 0.0};
 	numerical_analysis::MatrixDecomposer<TField>::lu(A, L, U, P, partial_piv);
 	/*std::cout << L << std::endl;
@@ -54,7 +54,7 @@ void numerical_analysis::LinearSystemSolver<TField>::solve_by_cholesky(const Mat
 					  Matrix<TField> b,
 					  Matrix<TField> &x) {
 	
-	numerical_analysis::Matrix<TField> L {A.rows};	
+	numerical_analysis::Matrix<TField> L {A.rows, A.rows, 1, 0};	
 	numerical_analysis::MatrixDecomposer<TField>::cholesky(A, L);
 	numerical_analysis::Matrix<TField> y {A.rows, 1, 0};
 	numerical_analysis::LinearSystemSolver<TField>::forward_substitution(L, b, y);

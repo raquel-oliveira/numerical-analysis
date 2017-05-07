@@ -42,7 +42,7 @@ int main(int argn, char ** argc) {
     getline(matrix_txt, input);
     n = stoi(input);
 
-    numerical_analysis::Matrix<double> matrix{n};
+    numerical_analysis::Matrix<double> matrix{n, n, 1, 0};
     numerical_analysis::Matrix<double> b{n,1,0};
     numerical_analysis::Matrix<double> x_lu {1, n, 0};
     numerical_analysis::Matrix<double> x_cholesky {1, n, 0};
