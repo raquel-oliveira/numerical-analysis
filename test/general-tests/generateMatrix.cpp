@@ -16,7 +16,7 @@ int main(int argn, char ** argc){
 	if(argn > 1)
 		n = stoi(argc[1]);
 
-	numerical_analysis::Matrix<double> M{n};
+	numerical_analysis::Matrix<double> M{n, n, 1, 0};
 	
 	std::random_device rd;
 	std::default_random_engine generator(rd()); // rd() provides a random seed
@@ -29,7 +29,7 @@ int main(int argn, char ** argc){
 		}
 	}
 
-	numerical_analysis::Matrix<double> A{n};
+	numerical_analysis::Matrix<double> A{n, n, 1, 0};
 	numerical_analysis::Matrix<double> b{n,1,0};
 
 	A = M*M.transpose();

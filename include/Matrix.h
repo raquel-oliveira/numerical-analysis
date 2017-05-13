@@ -40,30 +40,26 @@ class Matrix {
         int cols;               /*< Number of columns. */
 
         /**
-         * Constructor for an m x n matrix with a defined value
-         * in each cell.
+         * Constructor for an m x n matrix.
+		 * 
+		 * It accepts two values: _diag, which is the value for filling
+		 * the diagonal; and _others, which fills the other matrix
+		 * positions.
          *
          * @param _m            Number of lines.
          * @param _n            Number of columns.
-         * @param _initial      Initial value for each cell.
+		 * @param _diag			Initial value for cells in the diagonal.
+		 * @param _others		Initial value for the other cells.
          * */
-        Matrix (const int & _m, const int & _n, const TField & _initial);
+        Matrix (const int & _m, const int & _n, const TField & _diag, const TField & _others);
 
         /**
-         * Constructor for an m x m matrix with an initial value for
-         * each cell.
+         * Constructor for an m x n matrix, with an initial elements.
          *
          * @param _m            Number of lines and columns.
-         * @param _initial      Initial value for each cell.
+		 * @param _initial		Fill the matrix with this element.
          * */
-        Matrix (const int & _m, const TField & _initial);
-
-        /**
-         * Constructor for an m x m identity matrix.
-         *
-         * @param _m            Dimension of the identity matrix.
-         * */
-        Matrix(const int & _m);
+        Matrix (const int & _m, const int & _n, const TField & _initial);
 
         /**
          * Constructor which takes an initializer list.

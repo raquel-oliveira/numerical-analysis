@@ -5,7 +5,8 @@
 #include <cmath>
 
 template<typename TField>
-numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
+numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, 
+										   const TField & _diag, const TField & _others) : rows {_m}, cols {_n} {
 
     // Test nullity of number of cols and rows
     if (!_m or !_n) 
@@ -16,19 +17,17 @@ numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, const
     for (int i = 0; i < _m; ++i) {
         *(data + i) = new TField[_n];
         for (int j = 0; j < _n; ++j) {
-            data[i][j] = _initial;
+			if (i == j)
+				data[i][j] = _diag;
+			else
+				data[i][j] = _others;
         }
     }
 }
 
 template<typename TField>
-numerical_analysis::Matrix<TField>::Matrix(const int & _m, const TField & _initial) : Matrix(_m, _m, _initial) {/* empty */}
-
-template<typename TField>
-numerical_analysis::Matrix<TField>::Matrix(const int & _m) : Matrix(_m, _m, 0) {
-    for (int i = 0; i < _m; ++i)
-        this->data[i][i] = 1;
-}
+numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n,
+		const TField & _initial) : Matrix(_m, _n, _initial, _initial) {/* empty */}
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) :  rows {from.rows}, cols {from.cols} {
