@@ -111,7 +111,17 @@ namespace numerical_analysis {
 					const std::pair<TField, TField> & interval, 
 					int criteria, const double & error,
 					TField & root); 
-	
+		private:
+
+			/*!
+			 * Compute a Lagrange bound.
+			 * 
+			 * Used as an internal function for Lagrange interval restriction.
+			 * 
+			 * @param coeff		Coefficients.
+			 * @param bound		Result.
+			 * */
+			static void lagrange_formula(std::vector<TField> coeff, TField & bound);	
 	};
 
 };
