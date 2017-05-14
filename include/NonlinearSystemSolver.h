@@ -27,8 +27,8 @@ namespace numerical_analysis {
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root.
 			 * */
-			static void newton(const Matrix<std::function<TField(const std::vector<TField> &)>> & F,
-					const Matrix<std::function<TField(const std::vector<TField> &)>> & J,
+			static void newton(const Matrix<std::function<TField(const Matrix<TField> &)>> & F,
+					const Matrix<std::function<TField(const Matrix<TField> &)>> & J,
 					Matrix<TField> & initial,
 					Matrix<TField> & root,
 					int criteria = 1, double error = 0.001, int iterations = 1000);
