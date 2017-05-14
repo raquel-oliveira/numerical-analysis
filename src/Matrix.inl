@@ -239,7 +239,7 @@ std::ostream& numerical_analysis::operator<<(std::ostream& os, const numerical_a
 
 template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::eval(
-		const Matrix<std::function<TField(Matrix<TField>)>> & M, const Matrix<TField> & v) {
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & M, const Matrix<TField> & v) {
 
 	if (v.cols > 1) 
 		throw std::runtime_error("eval: You should pass a vector (just one column)."); 	

@@ -285,7 +285,7 @@ class Matrix {
 	 * */
 	template<typename TField>
 	static Matrix<TField> eval(
-		const Matrix<std::function<TField(Matrix<TField>)>> & M, 
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & M, 
 		const Matrix<TField> & v);
 
 }
