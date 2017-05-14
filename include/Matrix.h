@@ -2,6 +2,8 @@
 #define _MATRIX_
 
 #include <iostream>
+#include <functional>
+#include <vector>
 
 /**
  * Represents an m x n matrix, with its data and operations.
@@ -206,7 +208,6 @@ class Matrix {
          * */
         Matrix<TField> transpose() const;
 
-
          /**
          * Method to get diagonal of a matrix and return it.
          *
@@ -275,6 +276,17 @@ class Matrix {
 	 * */
 	template<typename TField>
 	std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix);
+
+	/**
+	 * Evaluate a matrix of functions at a given point.
+	 * 
+	 * @param M			The matrix of functions (must be a matrix of functions!)
+	 * @param v			The point.
+	 * */
+	template<typename TField>
+	static Matrix<TField> eval(
+		const Matrix<std::function<TField(std::vector<TField>)>> & M, 
+		const std::vector<TField> & v);
 
 }
 

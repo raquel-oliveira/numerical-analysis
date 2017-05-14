@@ -238,6 +238,16 @@ std::ostream& numerical_analysis::operator<<(std::ostream& os, const numerical_a
 }
 
 template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::eval(
+		const Matrix<std::function<TField(std::vector<TField>)>> & M, const std::vector<TField> & v) {
+	Matrix<TField> result {M.rows, M.cols, 0};
+	for (int i = 0; i < M.rows; ++i) 
+		for (int j = 0; j < M.cols; ++j) 
+			result[i][j] = M[i][j](v);
+	return result;
+}
+
+template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose() const{
 
     numerical_analysis::Matrix<TField> transposed {this->cols, this->rows, 0};
