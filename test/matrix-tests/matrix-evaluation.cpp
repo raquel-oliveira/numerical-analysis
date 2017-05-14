@@ -6,11 +6,11 @@ using namespace numerical_analysis;
 
 int main(void) {
 
-	Matrix<std::function<double(Matrix<double>)>> J = {
-		{[](Matrix<double> p){return p[0][0]*p[0][0];},
-		[](Matrix<double> p){return p[0][0]*p[1][0];}},
-		{[](Matrix<double> p){return p[0][0]*p[1][0];},
-		[](Matrix<double> p){return p[0][0]*p[1][0];}},
+	Matrix<std::function<double(const Matrix<double> &)>> J = {
+		{[](const Matrix<double> p){return p[0][0]*p[0][0];},
+		[](const Matrix<double> p){return p[0][0]*p[1][0];}},
+		{[](const Matrix<double> p){return p[0][0]*p[1][0];},
+		[](const Matrix<double> p){return p[0][0]*p[1][0];}},
 	};
 
 	Matrix<double> M = {{1, 2}, {2, 1}};
