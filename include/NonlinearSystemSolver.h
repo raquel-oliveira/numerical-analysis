@@ -13,7 +13,7 @@ namespace numerical_analysis {
 	 * @date		2017-03-23
 	 * @version		1.0
 	 * */
-	template<typename TFunctionSig>
+	template<typename TField>
 	class NonlinearSystemSolver {
 
 		public:
@@ -27,10 +27,11 @@ namespace numerical_analysis {
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root.
 			 * */
-			static void newton(const Matrix<std::function<TFunctionSig>> & F,
-					const Matrix<std::function<TFunctionSig>> & J,
-					int criteria, const double & error,
-					Matrix<long double> & root);
+			static void newton(const Matrix<std::function<TField(const std::vector<TField> &)>> & F,
+					const Matrix<std::function<TField(const std::vector<TField> &)>> & J,
+					Matrix<TField> & initial,
+					Matrix<TField> & root,
+					int criteria = 1, double error = 0.001, int iterations = 1000);
 		
 	};
 };

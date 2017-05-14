@@ -4,27 +4,27 @@
 int main(void) {
 
 	// A vector field
-	numerical_analysis::Matrix<std::function<double (double, double)>> F = {
-		{[](double x, double y){return x + y;}},
-		{[](double x, double y){return x*x + y;}},
-		{[](double x, double y){return x*y + y;}}
+	numerical_analysis::Matrix<std::function<double (const std::vector<double>&)>> F = {
+		{[](const std::vector<double> & p){return p[0] + p[1];}},
+		{[](const std::vector<double> & p){return p[0]*p[0] + p[1];}},
+		{[](const std::vector<double> & p){return p[0]*p[1] + p[1];}}
 	};
 
 	// It's Jacobian
-	numerical_analysis::Matrix<std::function<double (double, double)>> J = {
-		{ [](double x, double y){return 1;},	[](double x, double y){return 1;}   },
-		{ [](double x, double y){return 2*x;},	[](double x, double y){return 1;}	},
-		{ [](double x, double y){return y;},	[](double x, double y){return x+1;} }
+	numerical_analysis::Matrix<std::function<double (const std::vector<double>&) >> J = {
+		{ [](const std::vector<double> & p){return 1;},	[](const std::vector<double> & p){return 1;}   },
+		{ [](const std::vector<double> & p){return 2*p[0];},	[](const std::vector<double> & p){return 1;}	},
+		{ [](const std::vector<double> & p){return p[1];},	[](const std::vector<double> & p){return p[0]+1;} }
 	};
 
 	// The root
-	numerical_analysis::Matrix<long double> root {3, 1, 0};
+	numerical_analysis::Matrix<double> root {3, 1, 0};
+	numerical_analysis::Matrix<double> initial {0, 0, 0};
 
 	// Solve by Newton's method
-	numerical_analysis::NonlinearSystemSolver<double(double,double)>::newton(
-		F, J,
-		1, 0.001,
-		root
+	numerical_analysis::NonlinearSystemSolver<double>::newton(
+		F, J, initial, root,
+		1, 0.001, 1000
 	);
 
 	return 0;
