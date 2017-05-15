@@ -57,6 +57,7 @@ int main(void) {
 
 	std::cout << "Original: " << m15;
 	std::cout << "Inverse: " << m15.inverse();
+	std::cout << "Times 1/2: " << m15.times(0.5);
 	
 	numerical_analysis::Matrix<double> m16 {
 		{1, 2, 4},

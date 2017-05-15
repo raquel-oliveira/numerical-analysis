@@ -357,6 +357,17 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::symmetric
 }
 
 template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::times(TField scalar) const{
+    numerical_analysis::Matrix<TField> p {*this};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+                p[i][j] *= scalar; 
+        }
+    }
+    return p;
+}
+
+template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::pow(int k) const{
 
     numerical_analysis::Matrix<TField> p {this->cols, this->rows, 0};
