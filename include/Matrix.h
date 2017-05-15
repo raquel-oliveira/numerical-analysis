@@ -243,6 +243,15 @@ class Matrix {
 
         /**
          * 
+         * Method to multiply a matrix by a scalar.
+         *
+         * @param scalar Scalar.
+         * @return Matrix<TField> Matrix
+         * */
+        Matrix<TField> times(TField scalar) const;
+
+        /**
+         * 
          * Method to do exponentiation of the matrix and return it
          *
          * The base is the data of the matrix (matrix[i][j]).
