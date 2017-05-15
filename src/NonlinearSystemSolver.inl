@@ -44,16 +44,12 @@ void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
 		Matrix<TField> & root,
 		int criteria, double error, int iterations) {
 
-	// To multiply by -1 (provisory)
-	Matrix<TField> opposite {J.rows, J.cols, -1, 0};
-
 	int k = 1;
 
-	//Matrix<TField> A = eval<TField>(J, initial);
-	Matrix<TField> A {J.rows, J.rows, 1, 0};
+	Matrix<TField> A = eval<TField>(J, initial).inverse();
 	Matrix<TField> v = eval<TField>(F, initial);
 
-	Matrix<TField> s = opposite*A*v;
+	Matrix<TField> s = -A*v;
 	x += s;
 	k = 2;
 
@@ -62,9 +58,21 @@ void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
 		v = eval<TField>(F, x);
 		Matrix<TField> y = v - w;
 		
-		Matrix<TField> z = opposite*A*y;
+		Matrix<TField> z = -A*y;
 
-		Matrix<TField> p = opposite*s*z;	
+		TField p = (-s.transpose()*z)[0][0];	
+		Matrix<TField> u = 	s.transpose()*A;
+		A = A + (s + z).times(1/p) * u;
+		s = -A*v;
+		x = x + s;
+		if (s.norm_infinity() <= error) {
+			root = x;
+			break;
+		}
 		++k;	
 	}
+
+	if (k > iterations)
+		std::cout << "Broyden: max iterations reached!" << std::endl;
+
 }
