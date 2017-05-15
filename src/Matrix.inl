@@ -158,6 +158,15 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator-
 }
 
 template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator-() {
+	Matrix<TField> opp {*this};
+	for (int i = 0; i < opp.rows; ++i)
+		for (int j = 0; j < opp.cols; ++j)
+			opp[i][j] *= -1;
+	return opp;
+}
+
+template<typename TField>
 numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operator-=(const Matrix<TField> & _rhs) {
     if (rows != _rhs.rows || cols != _rhs.cols)
         throw std::logic_error("Matrices must have the same size!");

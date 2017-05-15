@@ -165,6 +165,11 @@ class Matrix {
         Matrix<TField> operator-(const Matrix<TField> & _rhs);
 
         /**
+         * Operator for multiplying matrices by -1.
+         * */
+        Matrix<TField> operator-();
+
+        /**
          * Operator for matrix subtraction and assignment.
          *
          * @param _rhs  The matrix to be subtracted from this matrix.

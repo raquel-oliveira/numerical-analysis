@@ -5,6 +5,7 @@ int main(void) {
     
     numerical_analysis::Matrix<double> m1 {6, 6, 1.0}; 
     std::cout << m1; 
+	std::cout << -m1;
 
     numerical_analysis::Matrix<double> m2 {6, 6, 1.0};
     std::cout << m2;
