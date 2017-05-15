@@ -47,6 +47,25 @@ int main(void) {
 	std::cout << m9[1][0] << std::endl;
 	m9[4][0] = 4;
 	std::cout << m9[1][0] << std::endl;
+
+	// Testing inverse
+	numerical_analysis::Matrix<double> m15 {
+		{7, 2, 1},
+		{0, 3, -1},
+		{-3, 4, -2}
+	};
+
+	std::cout << "Original: " << m15;
+	std::cout << "Inverse: " << m15.inverse();
 	
+	numerical_analysis::Matrix<double> m16 {
+		{1, 2, 4},
+		{2, 4, 8},
+		{3, 6, 12}
+	};
+
+	std::cout << "Original: " << m16;
+	std::cout << "Inverse: " << m16.inverse();
+
     return 0;
 }

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include "MatrixDecomposer.h"
+#include "LinearSystemSolver.h"
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, 
@@ -39,6 +41,12 @@ numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) :  rows 
             this->data[i][j] = from[i][j];
         }
     }
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField>::Matrix(const int & n, const TField * array) : Matrix(n, 1, array[0]) {
+	for (int i = 0; i < n; ++i)
+		this->data[i][0] = array[i];
 }
 
 template<typename TField>
@@ -259,6 +267,34 @@ numerical_analysis::Matrix<TField> numerical_analysis::eval(
 			result[i][j] = M[i][j](v);
 	return result;
 }
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::inverse() const{
+
+	if (this->rows != this->cols)
+		throw std::runtime_error("inverse: The matrix must be square.");
+
+	Matrix<TField> inverse {this->rows, this->cols, 1, 0};
+	// LU decomposition
+	Matrix<TField> L {this->rows, this->cols, 1, 0};	
+	Matrix<TField> U {*this};	
+	Matrix<TField> P {this->rows, this->cols, 1, 0};	
+	MatrixDecomposer<TField>::lu(*this, L,U,P);
+
+	// Solve n linear systems
+	Matrix<TField> I {this->rows, this->cols, 1, 0};	// Identity matrix, souce of canonical vectors
+	for (int j = 0; j < this->cols; ++j) {
+		Matrix<TField> b {this->rows, I[j]};
+		Matrix<TField> y {this->rows, 1, 0};
+		LinearSystemSolver<TField>::forward_substitution(L, P*b, y);
+		Matrix<TField> x {this->rows, 1, 0};
+		LinearSystemSolver<TField>::back_substitution(U, y, x);
+		for (int jj = 0; jj < this->cols; ++jj)
+			inverse[jj][j] = x[jj][0];
+	}
+	return inverse;
+}
+
 
 template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose() const{
