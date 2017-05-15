@@ -36,3 +36,35 @@ void numerical_analysis::NonlinearSystemSolver<TField>::newton(
 		std::cout << "newton: Max iterations reached, no convergence!" << std::endl;
 }
 
+template<typename TField>
+void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & F,
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & J,
+		Matrix<TField> & initial,
+		Matrix<TField> & root,
+		int criteria, double error, int iterations) {
+
+	// To multiply by -1 (provisory)
+	Matrix<TField> opposite {J.rows, J.cols, -1, 0};
+
+	int k = 1;
+
+	//Matrix<TField> A = eval<TField>(J, initial);
+	Matrix<TField> A {J.rows, J.rows, 1, 0};
+	Matrix<TField> v = eval<TField>(F, initial);
+
+	Matrix<TField> s = opposite*A*v;
+	x += s;
+	k = 2;
+
+	while (k <= iterations) {
+		Matrix<TField> w = v;
+		v = eval<TField>(F, x);
+		Matrix<TField> y = v - w;
+		
+		Matrix<TField> z = opposite*A*y;
+
+		Matrix<TField> p = opposite*s*z;	
+		++k;	
+	}
+}
