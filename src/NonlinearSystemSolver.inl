@@ -50,6 +50,7 @@ void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
 	Matrix<TField> v = eval<TField>(F, initial);
 
 	Matrix<TField> s = -A*v;
+	Matrix<TField> x {initial};
 	x += s;
 	k = 2;
 

@@ -35,18 +35,25 @@ int main(void) {
 		}
 	};
 
-	// The root
-	numerical_analysis::Matrix<double> root {3, 1, 0};
+	// The roots
+	numerical_analysis::Matrix<double> rootnewton {3, 1, 0};
+	numerical_analysis::Matrix<double> rootbroyden {3, 1, 0};
 
 	numerical_analysis::Matrix<double> initial {{0.1}, {0.1}, {-0.1}};
 
 	// Solve by Newton's method
 	numerical_analysis::NonlinearSystemSolver<double>::newton(
-		F, J, initial, root,
+		F, J, initial, rootnewton,
 		1, 0.000000001, 1000
 	);
+	std::cout << rootnewton << std::endl;
 
-	std::cout << root << std::endl;
+	// Solve by Broyden's method
+	numerical_analysis::NonlinearSystemSolver<double>::broyden(
+		F, J, initial, rootbroyden,
+		1, 0.000000001, 1000
+	);
+	std::cout << rootbroyden << std::endl;
 
 	return 0;
 }
