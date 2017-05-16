@@ -5,7 +5,7 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(const Matrix
 			Matrix<TField> & U) {
 
 	numerical_analysis::Matrix<TField> UTemp {source};
-	numerical_analysis::Matrix<TField> LinvTemp {source.rows}; 
+	numerical_analysis::Matrix<TField> LinvTemp {source.rows, source.rows, 1, 0}; 
 
 	// Calculate G0...Gi...Gn-2
 	for (int i = 0; i < source.cols - 1; ++i) {
@@ -19,7 +19,7 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(const Matrix
 		UTemp.swap_lines(i, maxp);
 		b.swap_lines(i, maxp);
 
-		numerical_analysis::Matrix<TField> Gi {source.rows}; 
+		numerical_analysis::Matrix<TField> Gi {source.rows, source.rows, 1, 0}; 
 		for (int j = i + 1; j < source.rows; ++j) {
 			Gi[j][i] = -(UTemp[j][i]/UTemp[i][i]);
 		}
@@ -37,8 +37,8 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_lu(const Matr
 					  Matrix<TField> b,
 					  Matrix<TField> & x) {
 
-	numerical_analysis::Matrix<TField> Linv {A.rows, 1};
-	numerical_analysis::Matrix<TField> U {A.rows, 1};
+	numerical_analysis::Matrix<TField> Linv {A.rows, A.rows, 1, 0};
+	numerical_analysis::Matrix<TField> U {A.rows, A.rows, 1, 0};
 	numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(A, b, Linv, U);
 	numerical_analysis::NaiveLinearSystemSolver<TField>::back_substitution(U, b, x);
 
@@ -49,11 +49,11 @@ void numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_cholesky(cons
 						  Matrix<TField> b,
 						  Matrix<TField> & x) {
 
-	numerical_analysis::Matrix<TField> Linv {A.rows, 1};
-	numerical_analysis::Matrix<TField> U {A.rows, 1};
+	numerical_analysis::Matrix<TField> Linv {A.rows, A.rows, 1, 0};
+	numerical_analysis::Matrix<TField> U {A.rows, A.rows, 1, 0};
     numerical_analysis::NaiveLinearSystemSolver<TField>::get_linvu(A, b, Linv, U);
 
-    numerical_analysis::Matrix<TField> Dinv {U.rows, U.cols, 0};
+    numerical_analysis::Matrix<TField> Dinv {U.rows, U.cols, 0, 0};
 
     for(int i = 0; i < U.cols; ++i) {
         if(U[i][i] < 0) 
@@ -84,9 +84,9 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix
 	if (p < 0 )
 		throw std::logic_error("Varepsilon can not be < 0");
 	
-	numerical_analysis::Matrix<TField> s_aux {A.rows, 1};
-	numerical_analysis::Matrix<TField> de {A.rows, 1};
-	numerical_analysis::Matrix<TField> s {A.rows, 1};
+	numerical_analysis::Matrix<TField> s_aux {A.rows, A.rows, 1};
+	numerical_analysis::Matrix<TField> de {A.rows, A.rows, 1};
+	numerical_analysis::Matrix<TField> s {A.rows, A.rows, 1};
 
 	de = (A.pow(-1)).diagonal();
 	s_aux = A-A.diagonal();
@@ -95,8 +95,8 @@ long numerical_analysis::NaiveLinearSystemSolver<TField>::solve_by_jacobi(Matrix
 	if (!(s.norm_infinity() < 1)) 
 		throw std::logic_error("Not indicated to use Jacobi method\n");
 	
-	numerical_analysis::Matrix<TField> aux {x.rows, x.cols};
-	numerical_analysis::Matrix<TField> n {x.rows, x.cols}; //to check correctness
+	numerical_analysis::Matrix<TField> aux {x.rows, x.cols, 0};
+	numerical_analysis::Matrix<TField> n {x.rows, x.cols, 0}; //to check correctness
 
 	s_aux = de.symmetric()*s_aux;
 

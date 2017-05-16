@@ -5,8 +5,9 @@ int main(void) {
     
     numerical_analysis::Matrix<double> m1 {6, 6, 1.0}; 
     std::cout << m1; 
+	std::cout << -m1;
 
-    numerical_analysis::Matrix<double> m2 {6, 1.0};
+    numerical_analysis::Matrix<double> m2 {6, 6, 1.0};
     std::cout << m2;
 
     numerical_analysis::Matrix<double> m3 = m1 * m2;
@@ -35,7 +36,7 @@ int main(void) {
 
     std::cout << m7;
 
-    numerical_analysis::Matrix<double> m9 {5};
+    numerical_analysis::Matrix<double> m9 {5, 1, 0};
     std::cout << m9;
 
     numerical_analysis::Matrix<double> m10 {{1,2,3},{4,5,6},{7,8,9}};
@@ -46,6 +47,26 @@ int main(void) {
 	std::cout << m9[1][0] << std::endl;
 	m9[4][0] = 4;
 	std::cout << m9[1][0] << std::endl;
+
+	// Testing inverse
+	numerical_analysis::Matrix<double> m15 {
+		{7, 2, 1},
+		{0, 3, -1},
+		{-3, 4, -2}
+	};
+
+	std::cout << "Original: " << m15;
+	std::cout << "Inverse: " << m15.inverse();
+	std::cout << "Times 1/2: " << m15.times(0.5);
 	
+	numerical_analysis::Matrix<double> m16 {
+		{1, 2, 4},
+		{2, 4, 8},
+		{3, 6, 12}
+	};
+
+	std::cout << "Original: " << m16;
+	std::cout << "Inverse: " << m16.inverse();
+
     return 0;
 }
