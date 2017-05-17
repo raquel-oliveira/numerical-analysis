@@ -24,7 +24,7 @@ int main(void) {
 	double aproximation = 1.5;
 
 	// Max iterations
-	int max_ite = 10;
+	int max_ite = 100;
 
 	try{
 		// Newton Method
@@ -33,7 +33,7 @@ int main(void) {
 			df, 
 			aproximation, 
 			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE,
-			0.001, 
+			0.0001, 
 			root, 
 			max_ite
 		);
@@ -44,13 +44,16 @@ int main(void) {
     }
 
     try{
+    	// Your derivative function
+		std::function<double (const double &)> g = [](const double & x){return x - ((x*x*x + 4*(x*x) - 10)/(3*(x*x) + 8*x));};
+
 		// Fixed_point Method
 		numerical_analysis::FunctionZeroesFinder<double>::fixed_point(
-			f,
-			df, 
+			g, 
 			aproximation, 
-			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE,
-			0.001, 
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | 
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE ,
+			0.0001, 
 			root, 
 			max_ite
 		);	

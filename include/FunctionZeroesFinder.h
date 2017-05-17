@@ -110,7 +110,6 @@ namespace numerical_analysis {
 			 * @param root			The root found.
 			 * */
 			static void fixed_point(std::function<TField (const TField &)> g,
-					std::function<TField (const TField &)> dg,
 					TField & aproximation, 
 					int criteria, const double & error,
 					TField & root,

@@ -1,6 +1,7 @@
 #include "FunctionZeroesFinder.h"
 #include <bitset>
 #include <climits>
+#include <iostream>
 
 template<typename TField>
 void numerical_analysis::FunctionZeroesFinder<TField>::lagrange_restriction(std::vector<TField> coeff, 
@@ -53,12 +54,14 @@ void numerical_analysis::FunctionZeroesFinder<TField>::newton(std::function<TFie
 				root = p;
 				return;
 			}
-		}else if(bits[1]){
+		}
+		if(bits[1]){
 			if(abs(f(p)-f(p0)) < error){
 				root = p;
 				return;
 			}
-		}else if(bits[2]){
+		}
+		if(bits[2]){
 			if(abs(p-p0) < error){
 				root = p;
 				return;
@@ -73,7 +76,6 @@ void numerical_analysis::FunctionZeroesFinder<TField>::newton(std::function<TFie
 
 template<typename TField>
 void numerical_analysis::FunctionZeroesFinder<TField>::fixed_point(std::function<TField (const TField &)> g,
-		std::function<TField (const TField &)> dg,
 		TField & aproximation, 
 		int criteria, const double & error,
 		TField & root,
@@ -85,19 +87,21 @@ void numerical_analysis::FunctionZeroesFinder<TField>::fixed_point(std::function
 	p0 = aproximation;
 
 	for(auto i = 0; i < iterations; ++i){
-		p = p0 - (g(p0) / dg(p0));
+		p = g(p0);
 		
 		if(bits[0]){
 			if(g(p) < error){
 				root = p;
 				return;
 			}
-		}else if(bits[1]){
+		}
+		if(bits[1]){
 			if(abs(g(p)-g(p0)) < error){
 				root = p;
 				return;
 			}
-		}else if(bits[2]){
+		}
+		if(bits[2]){
 			if(abs(p-p0) < error){
 				root = p;
 				return;
