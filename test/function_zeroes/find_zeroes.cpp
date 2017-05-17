@@ -1,6 +1,7 @@
 #include "FunctionZeroesFinder.h"
 #include <functional>
 #include <iostream>
+#include "Matrix.h"
 #include <cmath>
 #include <exception>
 

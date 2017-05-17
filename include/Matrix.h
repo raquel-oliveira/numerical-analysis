@@ -2,6 +2,8 @@
 #define _MATRIX_
 
 #include <iostream>
+#include <functional>
+#include <vector>
 
 /**
  * Represents an m x n matrix, with its data and operations.
@@ -40,30 +42,26 @@ class Matrix {
         int cols;               /*< Number of columns. */
 
         /**
-         * Constructor for an m x n matrix with a defined value
-         * in each cell.
+         * Constructor for an m x n matrix.
+		 * 
+		 * It accepts two values: _diag, which is the value for filling
+		 * the diagonal; and _others, which fills the other matrix
+		 * positions.
          *
          * @param _m            Number of lines.
          * @param _n            Number of columns.
-         * @param _initial      Initial value for each cell.
+		 * @param _diag			Initial value for cells in the diagonal.
+		 * @param _others		Initial value for the other cells.
          * */
-        Matrix (const int & _m, const int & _n, const TField & _initial);
+        Matrix (const int & _m, const int & _n, const TField & _diag, const TField & _others);
 
         /**
-         * Constructor for an m x m matrix with an initial value for
-         * each cell.
+         * Constructor for an m x n matrix, with an initial elements.
          *
          * @param _m            Number of lines and columns.
-         * @param _initial      Initial value for each cell.
+		 * @param _initial		Fill the matrix with this element.
          * */
-        Matrix (const int & _m, const TField & _initial);
-
-        /**
-         * Constructor for an m x m identity matrix.
-         *
-         * @param _m            Dimension of the identity matrix.
-         * */
-        Matrix(const int & _m);
+        Matrix (const int & _m, const int & _n, const TField & _initial);
 
         /**
          * Constructor which takes an initializer list.
@@ -71,6 +69,12 @@ class Matrix {
          * @param l             Initializer list with matrix elements.
          * */
         Matrix(const std::initializer_list<std::initializer_list<TField>> & l);
+
+		 /**
+         * Constructor for a one dimensional matrix from a native array.
+         * @param l             Array with elements of the vector.
+         * */
+        Matrix(const int & n, const TField * array);
 
         /**
          * Copy constructor.
@@ -167,6 +171,11 @@ class Matrix {
         Matrix<TField> operator-(const Matrix<TField> & _rhs);
 
         /**
+         * Operator for multiplying matrices by -1.
+         * */
+        Matrix<TField> operator-();
+
+        /**
          * Operator for matrix subtraction and assignment.
          *
          * @param _rhs  The matrix to be subtracted from this matrix.
@@ -203,13 +212,20 @@ class Matrix {
         template<typename TFielda>
         friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
 
+		 /**
+         * Method to get the inverse of a square matrix.
+		 * Uses LU decomposition to obtain the inverse.
+		 *
+         * @return Matrix<TField> Matrix inverted.  
+         * */
+        Matrix<TField> inverse() const;
+
         /**
          * Method to transpose a matrix and return it.
          *
          * @return Matrix<TField> Matrix transposed.  
          * */
         Matrix<TField> transpose() const;
-
 
          /**
          * Method to get diagonal of a matrix and return it.
@@ -224,6 +240,15 @@ class Matrix {
          * @return Matrix<TField> Matrix simetric.  
          * */
         Matrix<TField> symmetric() const;
+
+        /**
+         * 
+         * Method to multiply a matrix by a scalar.
+         *
+         * @param scalar Scalar.
+         * @return Matrix<TField> Matrix
+         * */
+        Matrix<TField> times(TField scalar) const;
 
         /**
          * 
@@ -279,6 +304,17 @@ class Matrix {
 	 * */
 	template<typename TField>
 	std::ostream& operator<<(std::ostream& os, const numerical_analysis::Matrix<TField>& matrix);
+
+	/**
+	 * Evaluate a matrix of functions at a given point.
+	 * 
+	 * @param M			The matrix of functions (must be a matrix of functions!)
+	 * @param v			The point.
+	 * */
+	template<typename TField>
+	static Matrix<TField> eval(
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & M, 
+		const Matrix<TField> & v);
 
 }
 
