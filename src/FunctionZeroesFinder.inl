@@ -68,7 +68,7 @@ void numerical_analysis::FunctionZeroesFinder<TField>::newton(std::function<TFie
 		p0 = p;
 	}
 
-	root = INT_MAX;
+	throw std::logic_error("The Newtons's method exceeds the maximum iterations\n");
 }
 
 template<typename TField>
@@ -78,6 +78,36 @@ void numerical_analysis::FunctionZeroesFinder<TField>::fixed_point(std::function
 		int criteria, const double & error,
 		TField & root,
 		const int iterations) {
+
+	std::bitset<4> bits(criteria); 
+
+	TField p, p0;
+	p0 = aproximation;
+
+	for(auto i = 0; i < iterations; ++i){
+		p = p0 - (g(p0) / dg(p0));
+		
+		if(bits[0]){
+			if(g(p) < error){
+				root = p;
+				return;
+			}
+		}else if(bits[1]){
+			if(abs(g(p)-g(p0)) < error){
+				root = p;
+				return;
+			}
+		}else if(bits[2]){
+			if(abs(p-p0) < error){
+				root = p;
+				return;
+			}
+		}
+
+		p0 = p;
+	}
+
+	throw std::logic_error("The Fixed-Point's method exceeds the maximum iterations\n");
 
 }
 

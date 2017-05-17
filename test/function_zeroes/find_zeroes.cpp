@@ -2,13 +2,16 @@
 #include <functional>
 #include <iostream>
 #include <cmath>
+#include <exception>
+
+#define PI 3.14159265
 
 int main(void) {
 
 	// Your function
-	std::function<double (const double &)> f = [](const double & x){return cos(x) - x;};
+	std::function<double (const double &)> f = [](const double & x){return x*x*x + 4*(x*x) - 10;};
 	// Your derivative function
-	std::function<double (const double &)> df = [](const double & x){return -sin(x) - 1;};
+	std::function<double (const double &)> df = [](const double & x){return 3*(x*x) + 8*x;};
 
 	// The root we want
 	double root;
@@ -17,23 +20,44 @@ int main(void) {
 	//std::pair<double, double> interval;
 	// TODO Apply methods for interval restriction here
 
-	double aproximation = 3.14159265/4;
+	double aproximation = 1.5;
 
 	// Max iterations
 	int max_ite = 10;
 
-	// Bisection Method
-	numerical_analysis::FunctionZeroesFinder<double>::newton(
-		f,
-		df, 
-		aproximation, 
-		numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE,
-		0.001, 
-		root, 
-		max_ite
-	);	
+	try{
+		// Newton Method
+		numerical_analysis::FunctionZeroesFinder<double>::newton(
+			f,
+			df, 
+			aproximation, 
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE,
+			0.001, 
+			root, 
+			max_ite
+		);
 
-	std::cout << "Root: " << root << std::endl;
+		std::cout << "Newton's root: " << root << std::endl;
+	}catch (std::exception& e){
+    	std::cout << e.what();
+    }
+
+    try{
+		// Fixed_point Method
+		numerical_analysis::FunctionZeroesFinder<double>::fixed_point(
+			f,
+			df, 
+			aproximation, 
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE,
+			0.001, 
+			root, 
+			max_ite
+		);	
+
+		std::cout << "Fixed point's root: " << root << std::endl;
+	}catch (std::exception& e){
+    	std::cout << e.what();
+    }
 
 	return 0;
 }
