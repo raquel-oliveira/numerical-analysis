@@ -112,9 +112,21 @@ namespace numerical_analysis {
 			static void fixed_point(std::function<TField (const TField &)> g,
 					TField & aproximation, 
 					int criteria, const double & error,
-					TField & root,
-					const int iterations); 
-	
+          TField & root,
+					const int iterations);
+
+    private:
+
+			/*!
+			 * Compute a Lagrange bound.
+			 * 
+			 * Used as an internal function for Lagrange interval restriction.
+			 * 
+			 * @param coeff		Coefficients.
+			 * @param bound		Result.
+			 * */
+			static void lagrange_formula(std::vector<TField> coeff, TField & bound);	
+
 	};
 
 };
