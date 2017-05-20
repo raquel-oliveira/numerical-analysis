@@ -32,7 +32,23 @@ namespace numerical_analysis {
 					Matrix<TField> & initial,
 					Matrix<TField> & root,
 					int criteria = 1, double error = 0.001, int iterations = 1000);
-		
+
+			/*!
+			 * Solves a nonlinear system by Broyden's method.
+			 * 
+			 * This is a Quasi-Newton method.
+			 * 
+			 * @param F				Functions.
+			 * @param J				Jacobian of F.
+			 * @param criteria		Stop criteria. Can be inserted as disjunction.
+			 * @param error			Acceptable error (epsilon).
+			 * @param root			The root.
+			 * */
+			static void broyden(const Matrix<std::function<TField(const Matrix<TField> &)>> & F,
+					const Matrix<std::function<TField(const Matrix<TField> &)>> & J,
+					Matrix<TField> & initial,
+					Matrix<TField> & root,
+					int criteria = 1, double error = 0.001, int iterations = 1000);	
 	};
 };
 
