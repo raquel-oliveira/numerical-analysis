@@ -48,9 +48,7 @@ namespace numerical_analysis {
 					const Matrix<std::function<TField(const Matrix<TField> &)>> & J,
 					Matrix<TField> & initial,
 					Matrix<TField> & root,
-					int criteria = 1, double error = 0.001, int iterations = 1000);
-	
-		
+					int criteria = 1, double error = 0.001, int iterations = 1000);	
 	};
 };
 

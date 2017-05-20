@@ -39,6 +39,7 @@ int main(void) {
 	numerical_analysis::Matrix<double> rootnewton {3, 1, 0};
 	numerical_analysis::Matrix<double> rootbroyden {3, 1, 0};
 
+
 	numerical_analysis::Matrix<double> initial {{0.1}, {0.1}, {-0.1}};
 
 	// Solve by Newton's method

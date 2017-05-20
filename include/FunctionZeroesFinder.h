@@ -13,7 +13,7 @@ namespace numerical_analysis {
 	 * @date 2017-03-23
 	 * @version 1.0
 	 * */
-	template<typename TField>
+	template<typename TField, typename TLess = std::less<TField>>
 	class FunctionZeroesFinder {
 
 		public:
@@ -61,7 +61,8 @@ namespace numerical_analysis {
 			static void bisection(std::function<TField (const TField &)> f,
 					const std::pair<TField, TField> & interval, 
 					int criteria, const double & error,
-					TField & root); 
+					TField & root,
+					const int iterations); 
 		
 			/*!
 			 * Computes a root (zero) of the function given some domain
@@ -76,7 +77,8 @@ namespace numerical_analysis {
 			static void secant(std::function<TField (const TField &)> f,
 					const std::pair<TField, TField> & interval, 
 					int criteria, const double & error,
-					TField & root); 
+					TField & root,
+					const int iterations); 
 	
 			/*!
 			 * Computes a root (zero) of the function given some domain
@@ -91,9 +93,10 @@ namespace numerical_analysis {
 			 * */
 			static void newton(std::function<TField (const TField & )> f,
 					std::function<TField (const TField &)> df,
-					const std::pair<TField, TField> & interval, 
+					TField & aproximation, 
 					int criteria, const double & error,
-					TField & root); 
+					TField & root,
+					const int iterations); 
 
 			/*!
 			 * Computes a root (zero) of the function given some domain
@@ -107,11 +110,23 @@ namespace numerical_analysis {
 			 * @param root			The root found.
 			 * */
 			static void fixed_point(std::function<TField (const TField &)> g,
-					std::function<TField (const TField &)> dg,
-					const std::pair<TField, TField> & interval, 
+					TField & aproximation, 
 					int criteria, const double & error,
-					TField & root); 
-	
+          TField & root,
+					const int iterations);
+
+    private:
+
+			/*!
+			 * Compute a Lagrange bound.
+			 * 
+			 * Used as an internal function for Lagrange interval restriction.
+			 * 
+			 * @param coeff		Coefficients.
+			 * @param bound		Result.
+			 * */
+			static void lagrange_formula(std::vector<TField> coeff, TField & bound);	
+
 	};
 
 };
