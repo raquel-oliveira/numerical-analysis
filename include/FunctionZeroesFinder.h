@@ -13,7 +13,7 @@ namespace numerical_analysis {
 	 * @date 2017-03-23
 	 * @version 1.0
 	 * */
-	template<typename TField>
+	template<typename TField, typename TLess = std::less<TField>>
 	class FunctionZeroesFinder {
 
 		public:
