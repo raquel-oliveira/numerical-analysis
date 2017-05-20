@@ -1,7 +1,7 @@
-#include "LinearSystemSolver.h"
-#include "NaiveLinearSystemSolver.h"
 #include "Matrix.h"
 #include <iostream>
+#include "LinearSystemSolver.h"
+#include "NaiveLinearSystemSolver.h"
 
 int main(void) {
 

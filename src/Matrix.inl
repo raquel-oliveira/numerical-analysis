@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include "MatrixDecomposer.h"
+#include "LinearSystemSolver.h"
 
 template<typename TField>
 numerical_analysis::Matrix<TField>::Matrix(const int & _m, const int & _n, 
@@ -39,6 +41,12 @@ numerical_analysis::Matrix<TField>::Matrix(const Matrix<TField> & from) :  rows 
             this->data[i][j] = from[i][j];
         }
     }
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField>::Matrix(const int & n, const TField * array) : Matrix(n, 1, array[0]) {
+	for (int i = 0; i < n; ++i)
+		this->data[i][0] = array[i];
 }
 
 template<typename TField>
@@ -158,6 +166,15 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator-
 }
 
 template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::operator-() {
+	Matrix<TField> opp {*this};
+	for (int i = 0; i < opp.rows; ++i)
+		for (int j = 0; j < opp.cols; ++j)
+			opp[i][j] *= -1;
+	return opp;
+}
+
+template<typename TField>
 numerical_analysis::Matrix<TField> & numerical_analysis::Matrix<TField>::operator-=(const Matrix<TField> & _rhs) {
     if (rows != _rhs.rows || cols != _rhs.cols)
         throw std::logic_error("Matrices must have the same size!");
@@ -239,13 +256,45 @@ std::ostream& numerical_analysis::operator<<(std::ostream& os, const numerical_a
 
 template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::eval(
-		const Matrix<std::function<TField(std::vector<TField>)>> & M, const std::vector<TField> & v) {
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & M, const Matrix<TField> & v) {
+
+	if (v.cols > 1) 
+		throw std::runtime_error("eval: You should pass a vector (just one column)."); 	
+
 	Matrix<TField> result {M.rows, M.cols, 0};
 	for (int i = 0; i < M.rows; ++i) 
 		for (int j = 0; j < M.cols; ++j) 
 			result[i][j] = M[i][j](v);
 	return result;
 }
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::inverse() const{
+
+	if (this->rows != this->cols)
+		throw std::runtime_error("inverse: The matrix must be square.");
+
+	Matrix<TField> inverse {this->rows, this->cols, 1, 0};
+	// LU decomposition
+	Matrix<TField> L {this->rows, this->cols, 1, 0};	
+	Matrix<TField> U {*this};	
+	Matrix<TField> P {this->rows, this->cols, 1, 0};	
+	MatrixDecomposer<TField>::lu(*this, L,U,P);
+
+	// Solve n linear systems
+	Matrix<TField> I {this->rows, this->cols, 1, 0};	// Identity matrix, souce of canonical vectors
+	for (int j = 0; j < this->cols; ++j) {
+		Matrix<TField> b {this->rows, I[j]};
+		Matrix<TField> y {this->rows, 1, 0};
+		LinearSystemSolver<TField>::forward_substitution(L, P*b, y);
+		Matrix<TField> x {this->rows, 1, 0};
+		LinearSystemSolver<TField>::back_substitution(U, y, x);
+		for (int jj = 0; jj < this->cols; ++jj)
+			inverse[jj][j] = x[jj][0];
+	}
+	return inverse;
+}
+
 
 template<typename TField>
 numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::transpose() const{
@@ -305,6 +354,17 @@ numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::symmetric
         }
     }
     return s;
+}
+
+template<typename TField>
+numerical_analysis::Matrix<TField> numerical_analysis::Matrix<TField>::times(TField scalar) const{
+    numerical_analysis::Matrix<TField> p {*this};
+    for(int i = 0; i < rows; ++i){
+        for(int j = 0; j < cols; ++j){
+                p[i][j] *= scalar; 
+        }
+    }
+    return p;
 }
 
 template<typename TField>

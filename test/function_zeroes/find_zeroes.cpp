@@ -2,42 +2,66 @@
 #include <functional>
 #include <iostream>
 #include "Matrix.h"
+#include <cmath>
+#include <exception>
+
+#define PI 3.14159265
 
 int main(void) {
 
-	// Lagrange interval restriction
-	std::vector<double> coeff {30, 29, -7, -5, 1};
-	std::tuple<double, double, double, double> bounds;
-	numerical_analysis::FunctionZeroesFinder<double>::lagrange_restriction(coeff, bounds);
-	std::cout << std::get<0>(bounds) << std::endl;
-	std::cout << std::get<1>(bounds) << std::endl;
-	std::cout << std::get<2>(bounds) << std::endl;
-	std::cout << std::get<3>(bounds) << std::endl;
-
-/*
 	// Your function
-	std::function<double (const double &)> f = [](const double & x){return x*x - 2;};
+	std::function<double (const double &)> f = [](const double & x){return x*x*x + 4*(x*x) - 10;};
+	// Your derivative function
+	std::function<double (const double &)> df = [](const double & x){return 3*(x*x) + 8*x;};
 
 	// The root we want
 	double root;
 
 	// Domain interval
-	std::pair<double, double> interval;
+	//std::pair<double, double> interval;
 	// TODO Apply methods for interval restriction here
 
-	// Bisection Method
-	numerical_analysis::FunctionZeroesFinder<double>::bisection(
-		f, 
-		interval, 
-		numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE,
-		0.001, root
-	);	
+	double aproximation = 1.5;
 
-	//numerical_analysis::Matrix<double (double, double, double)> m {5, [](double x, double y, double z){return x;}};
-	numerical_analysis::Matrix<std::function<double (double, double, double)>> m {5, 5, [](double x, double y, double z){return 1;},
-	[](double x, double y, double z){return 0;}};
+	// Max iterations
+	int max_ite = 100;
 
-	std::cout << m << std::endl;
-*/
+	try{
+		// Newton Method
+		numerical_analysis::FunctionZeroesFinder<double>::newton(
+			f,
+			df, 
+			aproximation, 
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE,
+			0.0001, 
+			root, 
+			max_ite
+		);
+
+		std::cout << "Newton's root: " << root << std::endl;
+	}catch (std::exception& e){
+    	std::cout << e.what();
+    }
+
+    try{
+    	// Your derivative function
+		std::function<double (const double &)> g = [](const double & x){return x - ((x*x*x + 4*(x*x) - 10)/(3*(x*x) + 8*x));};
+
+		// Fixed_point Method
+		numerical_analysis::FunctionZeroesFinder<double>::fixed_point(
+			g, 
+			aproximation, 
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | 
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE ,
+			0.0001, 
+			root, 
+			max_ite
+		);	
+
+		std::cout << "Fixed point's root: " << root << std::endl;
+	}catch (std::exception& e){
+    	std::cout << e.what();
+    }
+
 	return 0;
 }
