@@ -70,6 +70,12 @@ class Matrix {
          * */
         Matrix(const std::initializer_list<std::initializer_list<TField>> & l);
 
+		 /**
+         * Constructor for a one dimensional matrix from a native array.
+         * @param l             Array with elements of the vector.
+         * */
+        Matrix(const int & n, const TField * array);
+
         /**
          * Copy constructor.
          *
@@ -165,6 +171,11 @@ class Matrix {
         Matrix<TField> operator-(const Matrix<TField> & _rhs);
 
         /**
+         * Operator for multiplying matrices by -1.
+         * */
+        Matrix<TField> operator-();
+
+        /**
          * Operator for matrix subtraction and assignment.
          *
          * @param _rhs  The matrix to be subtracted from this matrix.
@@ -201,6 +212,14 @@ class Matrix {
         template<typename TFielda>
         friend Matrix<TField> operator*(Matrix<TField> & _rhs, const TField & _scalar);
 
+		 /**
+         * Method to get the inverse of a square matrix.
+		 * Uses LU decomposition to obtain the inverse.
+		 *
+         * @return Matrix<TField> Matrix inverted.  
+         * */
+        Matrix<TField> inverse() const;
+
         /**
          * Method to transpose a matrix and return it.
          *
@@ -221,6 +240,15 @@ class Matrix {
          * @return Matrix<TField> Matrix simetric.  
          * */
         Matrix<TField> symmetric() const;
+
+        /**
+         * 
+         * Method to multiply a matrix by a scalar.
+         *
+         * @param scalar Scalar.
+         * @return Matrix<TField> Matrix
+         * */
+        Matrix<TField> times(TField scalar) const;
 
         /**
          * 
