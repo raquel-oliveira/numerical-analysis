@@ -5,8 +5,8 @@
 #include <climits>
 #include <iostream>
 
-template<typename TField>
-void numerical_analysis::FunctionZeroesFinder<TField>::lagrange_formula(std::vector<TField> coeff,
+template<typename TField, typename TLess>
+void numerical_analysis::FunctionZeroesFinder<TField, TLess>::lagrange_formula(std::vector<TField> coeff,
 		TField & bound) {
 
 	char invsignal = coeff[coeff.size()-1] < 0 ? -1 : 1;
