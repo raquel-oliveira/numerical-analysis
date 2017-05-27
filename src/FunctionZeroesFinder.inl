@@ -123,11 +123,67 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bisection(std::fun
 }
 
 template<typename TField, typename TLess>
-void numerical_analysis::FunctionZeroesFinder<TField, TLess>::secant(std::function<TField (const TField &)> f,
+void numerical_analysis::FunctionZeroesFinder<TField, TLess>::regulaFalsi(std::function<TField (const TField &)> f,
 		const std::pair<TField, TField> & interval,
 		int criteria, const double & error,
 		TField & root,
 		const int iterations) {
+			//Check interval
+			TField f_first = f(interval.first);
+			TField f_second = f(interval.second);
+			TField l, f_l, u, f_u;
+			if (f_first * f_second < 0){ //ok - signals diff
+				// Redirect upper and lower bound
+				l = (f_first < 0) ? interval.first : interval.second;
+				f_l = (f_first < 0) ? f_first : f_second;
+				u = (f_first < 0) ? interval.second : interval.first;
+				f_u = (f_first < 0) ? f_second : f_first;
+			} else{
+				throw std::logic_error("Interval problem\n");
+			}
+
+			int it = 0;
+			TField f_m, m;
+			TLess comp_less;
+			std::bitset<4> bits(criteria);
+
+			while(it < iterations){
+				it++;
+				m = l - (((u-l)/(f_u - f_l)) * f(l));
+				//m = u - (((u-l)/(f_u - f_l)) * f(u));
+				f_m = f(m);
+				if(f_m == 0){
+					root = m;
+					return;
+				}
+				f_m > 0 ? u = m, f_u = f_m :
+									l = m, f_l = f_m;
+
+				if(bits[0]){
+					if(comp_less(std::abs(f_m), error)){
+						root = m;
+						//std::cout << "IMAGE \n Iteration " << it << "\n";
+						return;
+					}
+				}
+
+			 if(bits[1]){
+					if(comp_less(std::abs(f_u-f_l), error)){
+						root = m;
+						//std::cout << "DELTA IMAGE \n Iteration " << it << "\n";
+						return;
+					}
+				}
+
+				if(bits[2]){
+					if(comp_less(std::abs(u-l), error)){
+						root = m;
+						//std::cout << "DELTA DOMAIN \n Iteration " << it << "\n";
+						return;
+					}
+				}
+			}
+			throw std::logic_error("The Regula Falsi's method (método das cordas) exceeds the maximum iterations\n");
 
 }
 
