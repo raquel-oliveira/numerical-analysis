@@ -30,11 +30,11 @@ int main(void) {
 		// Newton Method
 		numerical_analysis::FunctionZeroesFinder<double>::newton(
 			f,
-			df, 
-			aproximation, 
+			df,
+			aproximation,
 			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE,
-			0.0001, 
-			root, 
+			0.0001,
+			root,
 			max_ite
 		);
 
@@ -49,19 +49,34 @@ int main(void) {
 
 		// Fixed_point Method
 		numerical_analysis::FunctionZeroesFinder<double>::fixed_point(
-			g, 
-			aproximation, 
-			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE | 
+			g,
+			aproximation,
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE |
 			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::DELTA_IMAGE ,
-			0.0001, 
-			root, 
+			0.0001,
+			root,
 			max_ite
-		);	
+		);
 
 		std::cout << "Fixed point's root: " << root << std::endl;
 	}catch (std::exception& e){
     	std::cout << e.what();
     }
 
+		try{
+			// Bisection Method
+			numerical_analysis::FunctionZeroesFinder<double>::bisection(
+				f,
+				std::make_pair(-1, 1.5),
+				numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE,
+				0.0001,
+				root,
+				max_ite
+			);
+
+			std::cout << "Bisection's root: " << root << std::endl;
+		}catch (std::exception& e){
+				std::cout << e.what();
+			}
 	return 0;
 }
