@@ -77,6 +77,22 @@ int main(void) {
 			std::cout << "Bisection's root: " << root << std::endl;
 		}catch (std::exception& e){
 				std::cout << e.what();
-			}
+		}
+
+		try{
+			// Regula Falsi Method
+			numerical_analysis::FunctionZeroesFinder<double>::regulaFalsi(
+				f,
+				std::make_pair(-1, 1.5),
+				numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE,
+				0.0001,
+				root,
+				max_ite
+			);
+
+			std::cout << "Regula Falsi's root/ Método das cordas: " << root << std::endl;
+		}catch (std::exception& e){
+				std::cout << e.what();
+		}
 	return 0;
 }
