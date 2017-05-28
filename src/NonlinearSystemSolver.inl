@@ -25,7 +25,7 @@ void numerical_analysis::NonlinearSystemSolver<TField>::newton(
 		// x = x + y
 		x += y;
 		// Check tolerance
-		if (y.norm_infinity() <= error) {
+		if (y.norm_infinity() < error) {
 			root = x;
 			break;
 		}	
@@ -33,7 +33,7 @@ void numerical_analysis::NonlinearSystemSolver<TField>::newton(
 	}
 
 	if (k > iterations)
-		std::cout << "newton: Max iterations reached, no convergence!" << std::endl;
+		throw std::runtime_error("Maximum iterations reached!");
 }
 
 template<typename TField>
@@ -43,10 +43,40 @@ void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
 		Matrix<TField> & initial,
 		Matrix<TField> & root,
 		int criteria, double error, int iterations) {
+	
+	int k = 0;
+	Matrix<TField> Aap {J.rows, J.cols, 1, 0};
+	Matrix<TField> Aaux {J.rows, J.cols, 1, 0};
+	Matrix<TField> Aapinv {J.rows, J.cols, 1, 0};
+	Matrix<TField> Aauxinv {J.rows, J.cols, 1, 0};
 
+	Matrix<TField> xap {initial};
+	Matrix<TField> xn {initial};
+
+	while (k <= iterations) {
+		if (eval<TField>(F,xn).norm_infinity() < error) {
+			root = xn;
+			break;
+		}
+		xn = xap - Aapinv*eval<TField>(F,xap);
+		Matrix<TField> dF {eval<TField>(F,xn) - eval<TField>(F,xap)}; 
+		Matrix<TField> dx {xn - xap};
+		Matrix<TField> u {(dF-Aap*dx).times(1.0/(dx.transpose() * dx)[0][0])};
+		Aaux = Aap;	
+		Aauxinv = Aapinv;
+		Aap = Aap + u*dx.transpose();
+		Aapinv = Aauxinv - (Aauxinv * u * dx.transpose()*Aauxinv).times(1/(1 + (dx.transpose()*Aauxinv*u)[0][0]));
+		xap = xn;
+		k++;	
+	}
+
+	if (k > iterations)
+		throw std::runtime_error("Maximum iterations reached!");
+	/*
 	int k = 1;
 
 	Matrix<TField> A = eval<TField>(J, initial).inverse();
+	//Matrix<TField> A {J.rows, J.cols, 1, 0};
 	Matrix<TField> v = eval<TField>(F, initial);
 
 	Matrix<TField> s = -A*v;
@@ -71,9 +101,6 @@ void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
 			break;
 		}
 		++k;	
-	}
-
-	if (k > iterations)
-		std::cout << "Broyden: max iterations reached!" << std::endl;
+	}*/
 
 }
