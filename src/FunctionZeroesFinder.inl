@@ -4,6 +4,7 @@
 #include <bitset>
 #include <climits>
 #include <iostream>
+#include <exception>
 
 template<typename TField, typename TLess>
 void numerical_analysis::FunctionZeroesFinder<TField, TLess>::lagrange_formula(std::vector<TField> coeff,
@@ -119,6 +120,7 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bisection(std::fun
 					}
 				}
 			}
+			root = m;
 			throw std::logic_error("The Bisection's method exceeds the maximum iterations\n");
 }
 
@@ -268,5 +270,25 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::fixed_point(std::f
 	}
 
 	throw std::logic_error("The Fixed-Point's method exceeds the maximum iterations\n");
+
+}
+
+template<typename TField, typename TLess>
+void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bissection_newton(std::function<TField (const TField & )> f,
+	std::function<TField (const TField &)> df, 
+	const std::pair<TField, TField> & interval, 
+	int criteria, const double & error,
+	TField & root, const int iterationsB, 
+	const int iterationsN){
+
+	try{
+		bisection(f, interval, criteria, error, root, iterationsB);
+	}catch(std::exception& e){
+		try{
+			newton(f, df, root, criteria, error, root, iterationsN);
+		}catch(std::exception& e){
+			throw std::logic_error("The Bissection-Newton's method exceeds the maximum iterations\n");
+		}
+	}
 
 }

@@ -24,7 +24,7 @@ int main(void) {
 	double aproximation = 1.5;
 
 	// Max iterations
-	int max_ite = 100;
+	int max_ite = 3;
 
 	try{
 		// Newton Method
@@ -63,36 +63,55 @@ int main(void) {
     	std::cout << e.what();
     }
 
-		try{
-			// Bisection Method
-			numerical_analysis::FunctionZeroesFinder<double>::bisection(
-				f,
-				std::make_pair(-1, 1.5),
-				numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE,
-				0.0001,
-				root,
-				max_ite
-			);
+	try{
+		// Bisection Method
+		numerical_analysis::FunctionZeroesFinder<double>::bisection(
+			f,
+			std::make_pair(-1, 1.5),
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE,
+			0.0001,
+			root,
+			max_ite
+		);
 
-			std::cout << "Bisection's root: " << root << std::endl;
-		}catch (std::exception& e){
-				std::cout << e.what();
-		}
+		std::cout << "Bisection's root: " << root << std::endl;
+	}catch (std::exception& e){
+			std::cout << e.what();
+	}
 
-		try{
-			// Regula Falsi Method
-			numerical_analysis::FunctionZeroesFinder<double>::regulaFalsi(
-				f,
-				std::make_pair(-1, 1.5),
-				numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE,
-				0.0001,
-				root,
-				max_ite
-			);
+	try{
+		// Regula Falsi Method
+		numerical_analysis::FunctionZeroesFinder<double>::regulaFalsi(
+			f,
+			std::make_pair(-1, 1.5),
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE,
+			0.0001,
+			root,
+			max_ite
+		);
 
-			std::cout << "Regula Falsi's root/ Método das cordas: " << root << std::endl;
-		}catch (std::exception& e){
-				std::cout << e.what();
-		}
+		std::cout << "Regula Falsi's root/ Método das cordas: " << root << std::endl;
+	}catch (std::exception& e){
+			std::cout << e.what();
+	}
+
+	try{
+		// Bisection Method
+		numerical_analysis::FunctionZeroesFinder<double>::bissection_newton(
+			f,
+			df,
+			std::make_pair(-1, 1.5),
+			numerical_analysis::FunctionZeroesFinder<double>::StopCriteria::IMAGE,
+			0.0001,
+			root,
+			max_ite,
+			max_ite
+		);
+
+		std::cout << "Bisection-Newtons's root: " << root << std::endl;
+	}catch (std::exception& e){
+			std::cout << e.what();
+	}
+
 	return 0;
 }

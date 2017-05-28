@@ -57,6 +57,7 @@ namespace numerical_analysis {
 			 * @param criteria		Stop criteria. Can be inserted as disjunction.
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root found.
+			 * @param iterations	The maximum number of iterations.
 			 * */
 			static void bisection(std::function<TField (const TField &)> f,
 					const std::pair<TField, TField> & interval,
@@ -73,6 +74,7 @@ namespace numerical_analysis {
 			 * @param criteria		Stop criteria. Can be inserted as disjunction.
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root found.
+			 * @param iterations	The maximum number of iterations.
 			 * */
 			static void regulaFalsi(std::function<TField (const TField &)> f,
 					const std::pair<TField, TField> & interval,
@@ -81,15 +83,16 @@ namespace numerical_analysis {
 					const int iterations);
 
 			/*!
-			 * Computes a root (zero) of the function given some domain
-			 * interval, using the Newton Method.
+			 * Computes a root (zero) of the function given some aproximation,
+			 * using the Newton Method.
 			 *
 			 * @param f				The function.
 			 * @param df			Function's first derivative.
-			 * @param interval		Domain interval.
+			 * @param aproximation	Some value that approximates the root.
 			 * @param criteria		Stop criteria. Can be inserted as disjunction.
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root found.
+			 * @param iterations	The maximum number of iterations.
 			 * */
 			static void newton(std::function<TField (const TField & )> f,
 					std::function<TField (const TField &)> df,
@@ -99,21 +102,42 @@ namespace numerical_analysis {
 					const int iterations);
 
 			/*!
-			 * Computes a root (zero) of the function given some domain
-			 * interval, using the Fixed Point Method.
+			 * Computes a root (zero) of the function given some aproximation,
+			 * using the Fixed Point Method.
 			 *
 			 * @param g				The function.
+			 * @param aproximation	Some value that approximates the root.
+			 * @param criteria		Stop criteria. Can be inserted as disjunction.
+			 * @param error			Acceptable error (epsilon).
+			 * @param root			The root found.
+			 * @param iterations	The maximum number of iterations.
+			 * */
+			static void fixed_point(std::function<TField (const TField &)> g,
+					TField & aproximation,
+					int criteria, const double & error,
+          			TField & root,
+					const int iterations);
+
+			/*!
+			 * Computes a root (zero) of the function given some domain
+			 * interval, using the mixed Bissection-Newton method. 
+			 *
+			 * @param f				The function.
 			 * @param dg			Function's first derivative.
 			 * @param interval		Domain interval.
 			 * @param criteria		Stop criteria. Can be inserted as disjunction.
 			 * @param error			Acceptable error (epsilon).
 			 * @param root			The root found.
+			 * @param iterationsB	The maximum number of iterations of Bissection method.
+			 * @param iterationsN	The maximum number of iterations of Newton method.
 			 * */
-			static void fixed_point(std::function<TField (const TField &)> g,
-					TField & aproximation,
+			static void bissection_newton(std::function<TField (const TField & )> f,
+					std::function<TField (const TField &)> df,
+					const std::pair<TField, TField> & interval,
 					int criteria, const double & error,
-          TField & root,
-					const int iterations);
+					TField & root,
+					const int iterationsB,
+					const int iterationsN);
 
     private:
 
