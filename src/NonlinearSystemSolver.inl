@@ -32,6 +32,8 @@ void numerical_analysis::NonlinearSystemSolver<TField>::newton(
 		++k;	
 	}
 
+	std::cout << "K = " << k << std::endl;
+
 	if (k > iterations)
 		throw std::runtime_error("Maximum iterations reached!");
 }
@@ -70,6 +72,7 @@ void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
 		k++;	
 	}
 
+	std::cout << "K = " << k << std::endl;
 	if (k > iterations)
 		throw std::runtime_error("Maximum iterations reached!");
 	/*
