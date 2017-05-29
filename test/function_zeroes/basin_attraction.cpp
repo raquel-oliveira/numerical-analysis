@@ -57,7 +57,7 @@ int main(int argn, char * args[]) {
 	};
 
 	std::complex<double> root;
-	int N0 = 50;
+	int N0 = 100;
 
 	// Image
 	cv::Mat M {1000, 1000, CV_8UC3, cv::Scalar(0,0,0)};
