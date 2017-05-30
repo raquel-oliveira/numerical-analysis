@@ -66,6 +66,7 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::signal_change_rest
 			if(x > interval.second) std::logic_error("Step p is not good!\n");
 		}else{
 			interval.first = x;
+			interval.second = x+p;
 			return;
 		}
 	}
