@@ -46,7 +46,9 @@ namespace numerical_analysis {
 			 * @param interval		Interval of the domain to be restricted.
 			 * */
 			static void signal_change_restriction(std::function<TField (const TField &)> f,
-					std::pair<TField, TField> & interval);
+					std::pair<TField, TField> & interval,
+					const TField & p,
+					const int iterations);
 
 			/*!
 			 * Computes a root (zero) of the function given some domain

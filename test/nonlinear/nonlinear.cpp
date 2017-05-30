@@ -59,16 +59,17 @@ int main(void) {
 	numerical_analysis::Matrix<long double> rootnewton2 {2, 1, 0};
 	numerical_analysis::Matrix<long double> rootbroyden2 {2, 1, 0};
 
-	//numerical_analysis::Matrix<long double> initial1 {{0.1}, {0.1}, {-0.1}};
+	numerical_analysis::Matrix<long double> initial1 {{0.1}, {0.1}, {-0.1}};
 	//numerical_analysis::Matrix<long double> initial1 {{0.5}, {0.5}, {-0.5}};
 	//numerical_analysis::Matrix<long double> initial1 {{1}, {1}, {1}};
 	//numerical_analysis::Matrix<long double> initial1 {{5}, {5}, {-5}};
-	numerical_analysis::Matrix<long double> initial1 {{50}, {50}, {50}};
+	//numerical_analysis::Matrix<long double> initial1 {{50}, {50}, {50}};
 
-	//numerical_analysis::Matrix<long double> initial2 {{1},{2}};
+	numerical_analysis::Matrix<long double> initial2 {{1},{2}};
 	//numerical_analysis::Matrix<long double> initial2 {{1},{1}};
-	numerical_analysis::Matrix<long double> initial2 {{-15000},{-10000}};
+	//numerical_analysis::Matrix<long double> initial2 {{-15000},{-10000}};
 
+	std::cout << "---- Newton results ----" << std::endl;
 	auto start = std::chrono::steady_clock::now();
 	// Solve by Newton's method
 	numerical_analysis::NonlinearSystemSolver<long double>::newton(
@@ -77,8 +78,10 @@ int main(void) {
 	);
 	auto end = std::chrono::steady_clock::now();
 	std::chrono::duration<double, std::milli> elapsed = (end - start);
-	std::cout << "Result Newton: \n" << rootnewton1 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
+	std::cout << "Root: \n" << rootnewton1 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
+	std::cout << "F(root) = \n" << eval<long double>(F,rootnewton1) << std::endl;
 
+	std::cout << "---- Broyden results ----" << std::endl;
 	start = std::chrono::steady_clock::now();
 	// Solve by Broyden's method
 	numerical_analysis::NonlinearSystemSolver<long double>::broyden(
@@ -87,9 +90,10 @@ int main(void) {
 	);
 	end = std::chrono::steady_clock::now();
 	elapsed = (end - start);
-	std::cout << "Result Broyden: \n" << rootbroyden1 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
-	std::cout << "F(root) = " << eval<long double>(F,rootbroyden1) << std::endl;
+	std::cout << "Root: \n" << rootbroyden1 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
+	std::cout << "F(root) = \n" << eval<long double>(F,rootbroyden1) << std::endl;
 
+	std::cout << "---- Newton results ----" << std::endl;
 	start = std::chrono::steady_clock::now();
 	// Solve by Newton's method
 	numerical_analysis::NonlinearSystemSolver<long double>::newton(
@@ -98,9 +102,10 @@ int main(void) {
 	);
 	end = std::chrono::steady_clock::now();
 	elapsed = (end - start);
-	std::cout << "Result Newton: \n" << rootnewton2 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
-	std::cout << "F(root) = " << eval<long double>(F2,rootnewton2) << std::endl;
+	std::cout << "Root: \n" << rootnewton2 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
+	std::cout << "F(root) = \n" << eval<long double>(F2,rootnewton2) << std::endl;
 
+	std::cout << "---- Broyden results ----" << std::endl;
 	start = std::chrono::steady_clock::now();
 	// Solve by Broyden's method
 	numerical_analysis::NonlinearSystemSolver<long double>::broyden(
@@ -109,7 +114,7 @@ int main(void) {
 	);
 	end = std::chrono::steady_clock::now();
 	elapsed = (end - start);
-	std::cout << "Result Broyden: \n" << rootbroyden2 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
-	std::cout << "F(root) = " << eval<long double>(F2,rootbroyden2) << std::endl;
+	std::cout << "Root: \n" << rootbroyden2 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
+	std::cout << "F(root) = \n" << eval<long double>(F2,rootbroyden2) << std::endl;
 	return 0;
 }
