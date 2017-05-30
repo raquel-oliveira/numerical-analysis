@@ -60,23 +60,43 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::signal_change_rest
 }
 
 template<typename TField, typename TLess>
+bool check_interval(std::function<TField (const TField &)> f, const std::pair<TField, TField> & interval){
+	TField f_first, f_second;
+	f_first = f(interval.first);
+	f_second = f(interval.second);
+	if (f_first * f_second < 0){
+		return true;
+	}
+	return false;
+}
+
+template<typename TField>
+bool check_interval(const TField a, const TField b){
+	if (a * b < 0){
+		return true;
+	}
+	return false;
+}
+
+template<typename TField, typename TLess>
 void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bisection(std::function<TField (const TField &)> f,
 		const std::pair<TField, TField> & interval,
 		int criteria, const double & error,
 		TField & root,
 		const int iterations) {
-			//Check interval
-			TField f_first = f(interval.first);
-			TField f_second = f(interval.second);
+			TField f_first, f_second;
 			TField l, f_l, u, f_u;
-			if (f_first * f_second < 0){ //ok - signals diff
-				// Redirect upper and lower bound
+
+			f_first = f(interval.first);
+			f_second = f(interval.second);
+
+			if (f_first * f_second > 0){
+				throw std::logic_error("Interval problem in bisection method\n");
+			} else {
 				l = (f_first < 0) ? interval.first : interval.second;
 				f_l = (f_first < 0) ? f_first : f_second;
 				u = (f_first < 0) ? interval.second : interval.first;
 				f_u = (f_first < 0) ? f_second : f_first;
-			} else{
-				throw std::logic_error("Interval problem\n");
 			}
 
 			int it = 0;
@@ -85,42 +105,48 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bisection(std::fun
 			std::bitset<4> bits(criteria);
 
 			while(it < iterations){
+				//std::cout << "Iteracao " << it <<" de bisection \n";
 				it++;
 				m = (l+u)/2;
 				f_m = f(m);
-				if(f_m == 0){
-					root = m;
-					return;
+				if(check_interval(f_l, f_m)){
+					l = m;
+					f_l = f_m;
+				} else {
+					if(f_m == 0){
+						root = m;
+						return;
+					} else {
+						u = m;
+						f_u = f_m;
+					}
 				}
-				f_m > 0 ? u = m, f_u = f_m :
-									l = m, f_l = f_m;
-
-				//image
+				/*std::cout << "A: " <<l << " f= " << f_l << "\n";
+				std::cout << "B: " <<u << " f= " << f_u << "\n";
+				std::cout << "P: " <<m << " f= " << f_m << "\n";*/
 				if(bits[0]){
+					//std::cout << "IMAGE("<<it<<"): f(p)=" <<f_m <<" abs(p)="<<std::abs(f_m)<<"   error: "<< error << "\n";
 					if(comp_less(std::abs(f_m), error)){
 						root = m;
-						//std::cout << "IMAGE \n Iteration " << it << "\n";
 						return;
 					}
 				}
-				//delta image
 				if(bits[1]){
+					//std::cout << "DELTA IMAGE("<<it<<"):  f(a)=" <<f_l <<"  f(b)="<<f_u<<"  abs(f(a)-f(b))="<<std::abs(f_u-f_l)<<"   error: "<< error << "\n";
 					if(comp_less(std::abs(f_u-f_l), error)){
 						root = m;
-						//std::cout << "DELTA IMAGE \n Iteration " << it << "\n";
 						return;
 					}
 				}
-				//delta domain
 				if(bits[2]){
+					//std::cout << "DELTA DOMAIN("<<it<<"):  A=" <<l <<"  B="<<u<<"  abs(a-b)="<<std::abs(u-l)<<"   error: "<< error << "\n";
 					if(comp_less(std::abs(u-l), error)){
 						root = m;
-						//std::cout << "DELTA DOMAIN \n Iteration " << it << "\n";
 						return;
 					}
 				}
 			}
-			root = m;
+			//root = m;
 			throw std::logic_error("The Bisection's method exceeds the maximum iterations\n");
 }
 
@@ -275,10 +301,10 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::fixed_point(std::f
 
 template<typename TField, typename TLess>
 void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bissection_newton(std::function<TField (const TField & )> f,
-	std::function<TField (const TField &)> df, 
-	const std::pair<TField, TField> & interval, 
+	std::function<TField (const TField &)> df,
+	const std::pair<TField, TField> & interval,
 	int criteria, const double & error,
-	TField & root, const int iterationsB, 
+	TField & root, const int iterationsB,
 	const int iterationsN){
 
 	try{
