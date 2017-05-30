@@ -55,8 +55,23 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::lagrange_restricti
 
 template<typename TField, typename TLess>
 void numerical_analysis::FunctionZeroesFinder<TField, TLess>::signal_change_restriction(std::function<TField (const TField &)> f,
-		std::pair<TField, TField> & interval) {
+	std::pair<TField, TField> & interval,
+	const TField & p, const int iterations) {
 
+	TField x;
+	x = interval.first;
+
+	for(int i = 0 ; i < iterations; ++i){
+		if(f(x) * f(x+p) > 0){
+			x += p;
+			if(x > interval.second) std::logic_error("Step p is not good!\n");
+		}else{
+			interval.first = x;
+			interval.second = x+p;
+			return;
+		}
+	}
+	throw std::logic_error("The Signal Change exceeds the maximum iterations\n");
 }
 
 template<typename TField, typename TLess>
@@ -169,7 +184,7 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::regulaFalsi(std::f
 					}
 				}
 
-			 if(bits[1]){
+			 	if(bits[1]){
 					if(comp_less(std::abs(f_u-f_l), error)){
 						root = m;
 						//std::cout << "DELTA IMAGE \n Iteration " << it << "\n";
@@ -207,7 +222,7 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::newton(std::functi
 		p = p0 - f(p0) / df(p0);
 
 		if(bits[0]){
-			if(comp_less(f(p), error)){
+			if(comp_less(std::abs(f(p)), error)){
 				root = p;
 				return;
 			}
@@ -248,7 +263,7 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::fixed_point(std::f
 		p = g(p0);
 
 		if(bits[0]){
-			if(comp_less(g(p), error)){
+			if(comp_less(std::abs(g(p)), error)){
 				root = p;
 				return;
 			}
