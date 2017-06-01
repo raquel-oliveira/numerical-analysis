@@ -69,6 +69,11 @@ int main(void) {
 	//numerical_analysis::Matrix<long double> initial2 {{1},{1}};
 	//numerical_analysis::Matrix<long double> initial2 {{-15000},{-10000}};
 
+	std::cout << "//----- Primeiro sistema -----//" << std::endl;
+
+	std::cout << "Inicial: " << std::endl;
+	std::cout << initial1 << std::endl;
+
 	std::cout << "---- Newton results ----" << std::endl;
 	auto start = std::chrono::steady_clock::now();
 	// Solve by Newton's method
@@ -92,6 +97,11 @@ int main(void) {
 	elapsed = (end - start);
 	std::cout << "Root: \n" << rootbroyden1 << "Time: " << elapsed.count() << "ms" << std::endl << std::endl;
 	std::cout << "F(root) = \n" << eval<long double>(F,rootbroyden1) << std::endl;
+
+	std::cout << "//----- Segundo sistema -----//" << std::endl;
+
+	std::cout << "Inicial: " << std::endl;
+	std::cout << initial2 << std::endl;
 
 	std::cout << "---- Newton results ----" << std::endl;
 	start = std::chrono::steady_clock::now();

@@ -13,6 +13,7 @@ void numerical_analysis::NonlinearSystemSolver<TField>::newton(
 
 	Matrix<TField> x {initial};
 	while (k <= iterations) {
+		std::cout << "k = " << k << std::endl << x << std::endl;
 		// Calculate F(x) and J(x)
 		Matrix<TField> Fx = eval<TField>(F,x);
 		Matrix<TField> Jx = eval<TField>(J,x);
@@ -56,6 +57,7 @@ void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
 	Matrix<TField> xn {initial};
 
 	while (k <= iterations) {
+		std::cout << "k = " << k << std::endl << xap << std::endl;
 		if (eval<TField>(F,xn).norm_infinity() < error) {
 			root = xn;
 			break;
