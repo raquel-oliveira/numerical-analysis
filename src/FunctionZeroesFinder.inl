@@ -119,11 +119,16 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bisection(std::fun
 			TLess comp_less;
 			std::bitset<4> bits(criteria);
 
+			std::cout << "\n########################\n";
+			std::cout << "### Bisection method ###\n";
+			std::cout << "########################\n";
+
 			while(it < iterations){
 				//std::cout << "Iteracao " << it <<" de bisection \n";
 				it++;
 				m = (l+u)/2;
 				f_m = f(m);
+				std::cout << "Iteration: " << it << " | m = " << m << " | f(m) = " << f_m << std::endl;
 				if(check_interval(f_l, f_m)){
 					u = m;
 					f_u = f_m;
@@ -161,7 +166,7 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bisection(std::fun
 					}
 				}
 			}
-			//root = m;
+			root = m;
 			throw std::logic_error("The Bisection's method exceeds the maximum iterations\n");
 }
 
@@ -191,11 +196,16 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::regulaFalsi(std::f
 			TLess comp_less;
 			std::bitset<4> bits(criteria);
 
+			std::cout << "\n###########################\n";
+			std::cout << "### Regula Falsi method ###\n";
+			std::cout << "###########################\n";
+
 			while(it < iterations){
 				it++;
 				m = l - (((u-l)/(f_u - f_l)) * f(l));
 				//m = u - (((u-l)/(f_u - f_l)) * f(u));
 				f_m = f(m);
+				std::cout << "Iteration: " << it << " | m = " << m << " | f(m) = " << f_m << std::endl;
 				if(check_interval(f_m,f_l)){
 					u = m;
 					f_u = f_m;
@@ -250,8 +260,14 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::newton(std::functi
 	TField p, p0;
 	p0 = aproximation;
 
+	std::cout << "\n#####################\n";
+	std::cout << "### Newton method ###\n";
+	std::cout << "#####################\n";
+
 	for(auto i = 0; i < iterations; ++i){
 		p = p0 - f(p0) / df(p0);
+
+		std::cout << "Iteration: " << i+1 << " | p = " << p << std::endl;
 
 		if(bits[0]){
 			if(comp_less(std::abs(f(p)), error)){
@@ -291,9 +307,13 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::fixed_point(std::f
 	TField p, p0;
 	p0 = aproximation;
 
+	std::cout << "\n##########################\n";
+	std::cout << "### Fixed-point method ###\n";
+	std::cout << "##########################\n";
+
 	for(auto i = 0; i < iterations; ++i){
 		p = g(p0);
-
+		std::cout << "Iteration: " << i+1 << " | p = " << p << std::endl;
 		if(bits[0]){
 			if(comp_less(std::abs(g(p)), error)){
 				root = p;
@@ -328,13 +348,17 @@ void numerical_analysis::FunctionZeroesFinder<TField, TLess>::bissection_newton(
 	TField & root, const int iterationsB,
 	const int iterationsN){
 
+	std::cout << "\n###############################\n";
+	std::cout << "### Bisection-newton method ###\n";
+	std::cout << "###############################\n";
+
 	try{
 		bisection(f, interval, criteria, error, root, iterationsB);
 	}catch(std::exception& e){
 		try{
 			newton(f, df, root, criteria, error, root, iterationsN);
 		}catch(std::exception& e){
-			throw std::logic_error("The Bissection-Newton's method exceeds the maximum iterations\n");
+			throw std::logic_error("The Bisection-Newton's method exceeds the maximum iterations\n");
 		}
 	}
 
