@@ -1,0 +1,111 @@
+#include "NonlinearSystemSolver.h"
+#include "LinearSystemSolver.h"
+
+template<typename TField>
+void numerical_analysis::NonlinearSystemSolver<TField>::newton(
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & F,
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & J,
+		Matrix<TField> & initial,
+		Matrix<TField> & root,
+		int criteria, double error, int iterations) {
+
+	int k = 1;
+
+	Matrix<TField> x {initial};
+	while (k <= iterations) {
+		std::cout << "k = " << k << std::endl << x << std::endl;
+		// Calculate F(x) and J(x)
+		Matrix<TField> Fx = eval<TField>(F,x);
+		Matrix<TField> Jx = eval<TField>(J,x);
+		// Solve the linear system J(x)y = -F(x)
+		for (int i = 0; i < Fx.rows; ++i)
+			for (int j = 0; j < Fx.cols; ++j)
+				Fx[i][j] *= -1;
+		Matrix<TField> y {F.rows, 1, 0};
+		LinearSystemSolver<TField>::solve_by_lu(Jx, Fx, y);
+		// x = x + y
+		x += y;
+		// Check tolerance
+		if (y.norm_infinity() < error) {
+			root = x;
+			break;
+		}	
+		++k;	
+	}
+
+	std::cout << "K = " << k << std::endl;
+
+	if (k > iterations)
+		throw std::runtime_error("Maximum iterations reached!");
+}
+
+template<typename TField>
+void numerical_analysis::NonlinearSystemSolver<TField>::broyden(
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & F,
+		const Matrix<std::function<TField(const Matrix<TField> &)>> & J,
+		Matrix<TField> & initial,
+		Matrix<TField> & root,
+		int criteria, double error, int iterations) {
+	
+	int k = 0;
+	Matrix<TField> Aap {J.rows, J.cols, 1, 0};
+	Matrix<TField> Aaux {J.rows, J.cols, 1, 0};
+	Matrix<TField> Aapinv {J.rows, J.cols, 1, 0};
+	Matrix<TField> Aauxinv {J.rows, J.cols, 1, 0};
+
+	Matrix<TField> xap {initial};
+	Matrix<TField> xn {initial};
+
+	while (k <= iterations) {
+		std::cout << "k = " << k << std::endl << xap << std::endl;
+		if (eval<TField>(F,xn).norm_infinity() < error) {
+			root = xn;
+			break;
+		}
+		xn = xap - Aapinv*eval<TField>(F,xap);
+		Matrix<TField> dF {eval<TField>(F,xn) - eval<TField>(F,xap)}; 
+		Matrix<TField> dx {xn - xap};
+		Matrix<TField> u {(dF-Aap*dx).times(1.0/(dx.transpose() * dx)[0][0])};
+		Aaux = Aap;	
+		Aauxinv = Aapinv;
+		Aap = Aap + u*dx.transpose();
+		Aapinv = Aauxinv - (Aauxinv * u * dx.transpose()*Aauxinv).times(1/(1 + (dx.transpose()*Aauxinv*u)[0][0]));
+		xap = xn;
+		k++;	
+	}
+
+	std::cout << "K = " << k << std::endl;
+	if (k > iterations)
+		throw std::runtime_error("Maximum iterations reached!");
+	/*
+	int k = 1;
+
+	Matrix<TField> A = eval<TField>(J, initial).inverse();
+	//Matrix<TField> A {J.rows, J.cols, 1, 0};
+	Matrix<TField> v = eval<TField>(F, initial);
+
+	Matrix<TField> s = -A*v;
+	Matrix<TField> x {initial};
+	x += s;
+	k = 2;
+
+	while (k <= iterations) {
+		Matrix<TField> w = v;
+		v = eval<TField>(F, x);
+		Matrix<TField> y = v - w;
+		
+		Matrix<TField> z = -A*y;
+
+		TField p = (-s.transpose()*z)[0][0];	
+		Matrix<TField> u = 	s.transpose()*A;
+		A = A + (s + z).times(1/p) * u;
+		s = -A*v;
+		x = x + s;
+		if (s.norm_infinity() <= error) {
+			root = x;
+			break;
+		}
+		++k;	
+	}*/
+
+}
